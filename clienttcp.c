@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:03:39 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/13 13:13:53 by scirciu          ###   ########.fr       */
+/*   Updated: 2014/02/13 17:47:41 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,14 @@
 #include <netdb.h>
 #include <stdio.h>
 #include <string.h>
+#include "cheader.h"
 typedef struct sockaddr_in t_sockaddr_in;
 typedef struct in_addr t_in_addr;
 typedef struct pollfd t_pollfd;
 typedef struct sockaddr t_sockaddr;
 
 #define PORT 1892
-#define IP "10.11.13.12"
-
-void error();
-unsigned short ft_htons(unsigned short value);
-unsigned int ft_htonl(unsigned int value);
+#define IP "127.0.0.1"
 
 int main()
 {
@@ -40,12 +37,11 @@ int main()
 
 	char buffer[99999];
 
-
 	printf("htonl = %u\nft_htonl = %u\n", htonl(65536), ft_htonl(65536));
 	if ((sock = socket(PF_INET, SOCK_STREAM, 0)) == -1)
 		error();
 
-	sin.sin_addr.s_addr = inet_addr(IP);
+	sin.sin_addr.s_addr = ft_inet_addr(IP);
 	sin.sin_family = PF_INET;
 	sin.sin_port = ft_htons(PORT);
 	printf("connect\n");
@@ -57,8 +53,7 @@ int main()
 	bzero(buffer, 20);
 	strncpy(buffer, "yo manoooooooooooooyo manooooooooooooooyo manooooooooooooooo\0", 60);
 	printf("buffer = :%s:\n", buffer);
-	if (write(sock, buffer, 60) == -1)
-		error();
+	ft_putstr_fd(buffer, sock);
 	printf("send\n");
 
 	sleep(2);

@@ -1,17 +1,33 @@
 #include <arpa/inet.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <errno.h>
 
-typedef struct	s_aton{
+typedef struct sockaddr_in t_sockaddr_in;
+typedef struct in_addr t_in_addr;
+typedef struct pollfd t_pollfd;
+typedef struct sockaddr t_sockaddr;
+typedef struct	s_aton t_aton;
+
+struct	s_aton
+{
 	u_long		parts[4];
 	in_addr_t	val;
 	char		*c;
 	char		*endptr;
 	int			gotend;
 	int			n;
-}				t_aton;
+};
 
-int inet_aton(const char *cp, struct in_addr *addr)
+unsigned long int ft_inet_addr(int value)
+{
+	t_in_addr addr;
+
+	ft_inet_aton(&value, &addr);
+	return(addr.s_addr);
+}
+
+int ft_inet_aton(const char *cp, t_in_addr *addr)
 {
 	t_aton		t;
 
@@ -20,17 +36,17 @@ int inet_aton(const char *cp, struct in_addr *addr)
 	t.gotend = 0;
 	while (!t.gotend)
 	{
-		t.errno = 0;
+		errno = 0;
 		t.val = strtoul((t.c), &(t.endptr), 0);
-		if (errno == ERANGE || t.endptr == c)
+		if (errno == ERANGE || t.endptr == t.c)
 			return (0);
 		t.parts[t.n] = t.val;
 		t.c = t.endptr;
 		if (t.c[0] == '.')
 		{
-			if (n == 3)
+			if (t.n == 3)
 				return (0);
-			n++;
+			t.n++;
 			t.c++;
 		}
 		else if(t.c[0] == '\0')
@@ -44,26 +60,26 @@ int inet_aton(const char *cp, struct in_addr *addr)
 		}
 
 	}
-	if (n == 1)
+	if (t.n == 1)
 	{
-		if (val > 0xffffff || parts[0] > 0xff)
+		if (t.val > 0xffffff || t.parts[0] > 0xff)
 			return (0);
-		val |= parts[0] << 24;
+		t.val |= t.parts[0] << 24;
 	}
-	else if (n == 2)
+	else if (t.n == 2)
 	{
-		if (val > 0xffff || parts[0] > 0xff || parts[1] > 0xff)
+		if (t.val > 0xffff ||t.parts[0] > 0xff || t.parts[1] > 0xff)
 			return (0);
-		val |= (parts[0] << 24) | (parts[1] << 16);
+		t.val |= (t.parts[0] << 24) | (t.parts[1] << 16);
 	}
-	else if (n == 3)
+	else if (t.n == 3)
 	{
-		if (val > 0xff || parts[0] > 0xff || parts[1] > 0xff ||
-				parts[2] > 0xff)
+		if (t.val > 0xff || t.parts[0] > 0xff || t.parts[1] > 0xff ||
+				t.parts[2] > 0xff)
 			return (0);
-		val |= (parts[0] << 24) | (parts[1] << 16) | (parts[2] << 8);
+		t.val |= (t.parts[0] << 24) | (t.parts[1] << 16) | (t.parts[2] << 8);
 	}
 	if (addr != NULL)
-		addr->s_addr = htonl(val);
+		addr->s_addr = ft_htonl(t.val);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:32:17 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/13 10:42:27 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/02/13 17:00:32 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct pollfd t_pollfd;
 typedef struct sockaddr t_sockaddr;
 
 #define PORT 1892
-#define IP "10.11.13.12"
+//#define IP "10.11.13.12"
 
 void error();
 
