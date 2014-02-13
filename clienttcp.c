@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:03:39 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/13 10:40:28 by scirciu          ###   ########.fr       */
+/*   Updated: 2014/02/13 13:13:53 by scirciu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct pollfd t_pollfd;
 typedef struct sockaddr t_sockaddr;
 
 #define PORT 1892
-#define IP "10.11.13.14"
+#define IP "10.11.13.12"
 
 void error();
 unsigned short ft_htons(unsigned short value);
@@ -41,7 +41,7 @@ int main()
 	char buffer[99999];
 
 
-	printf("htonl = %d\nft_htonl = %d\n", htonl(2453), ft_htonl(2453));
+	printf("htonl = %u\nft_htonl = %u\n", htonl(65536), ft_htonl(65536));
 	if ((sock = socket(PF_INET, SOCK_STREAM, 0)) == -1)
 		error();
 
@@ -77,8 +77,10 @@ unsigned short ft_htons(unsigned short value)
 	return (value >> 8 | value << 8);
 }
 
-unsigned int ft_htonl(unsigned int value)
+unsigned int ft_htonl(unsigned int value) // ca KIFFEEEE by scirciu
 {
-	return (value >> 16 | value << 16 & value >> 24 | value << 24);
-//		return (value >> 24 | value << 24);
+	char	*c;
+
+	c = (char *)&value;
+	return (c[3] | c[2] << 8 | c[1] << 16 | c[0] << 24);
 }
