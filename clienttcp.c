@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:03:39 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/13 09:39:35 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/02/13 10:40:28 by scirciu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ typedef struct in_addr t_in_addr;
 typedef struct pollfd t_pollfd;
 typedef struct sockaddr t_sockaddr;
 
-#define PORT 1891
-#define IP "127.0.0.1"
+#define PORT 1892
+#define IP "10.11.13.14"
 
 void error();
 unsigned short ft_htons(unsigned short value);
