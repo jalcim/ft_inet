@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:32:17 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/13 10:15:13 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/02/13 10:42:27 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ typedef struct in_addr t_in_addr;
 typedef struct pollfd t_pollfd;
 typedef struct sockaddr t_sockaddr;
 
-#define PORT 1891
-#define IP "127.0.0.1"
+#define PORT 1892
+#define IP "10.11.13.12"
 
 void error();
 
@@ -53,7 +53,7 @@ int main()
 	}
 	serveur.sin_family = PF_INET;
 	serveur.sin_port = htons(PORT);
-	serveur.sin_addr.s_addr = inet_addr(IP);
+//	serveur.sin_addr.s_addr = inet_addr(IP);
 	if (bind(sock, (t_sockaddr *)&serveur, size) == -1)
 	{
 		printf("bind\n");
