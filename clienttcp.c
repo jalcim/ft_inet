@@ -10,41 +10,27 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <errno.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#include <netdb.h>
-#include <stdio.h>
-#include <string.h>
-#include "cheader.h"
-typedef struct sockaddr_in t_sockaddr_in;
-typedef struct in_addr t_in_addr;
-typedef struct pollfd t_pollfd;
-typedef struct sockaddr t_sockaddr;
-
+#include "ft_inet.h"
+#include "libft/libft.h"
 #define PORT 1892
 #define IP "127.0.0.1"
 
 int main()
 {
 	int sock;
-
 	t_sockaddr_in sin = {0};
-
 	char buffer[99999];
+	int err;
 
 	printf("htonl = %u\nft_htonl = %u\n", htonl(65536), ft_htonl(65536));
 	if ((sock = socket(PF_INET, SOCK_STREAM, 0)) == -1)
 		error();
 
+	printf(inet_addr(IP) != ft_inet_addr(IP) ? "" : "origin %d : ft %d\n", (int)inet_addr(IP), (int)ft_inet_addr(IP));
 	sin.sin_addr.s_addr = ft_inet_addr(IP);
 	sin.sin_family = PF_INET;
-	sin.sin_port = ft_htons(PORT);
-	printf("connect\n");
+	sin.sin_port = ft_htons(PORT);	
+	printf("connected\n");
 
 	if (connect(sock, (t_sockaddr*)&sin, sizeof(t_sockaddr)) == -1)
 		error();

@@ -1,23 +1,4 @@
-#include <arpa/inet.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <errno.h>
-
-typedef struct sockaddr_in t_sockaddr_in;
-typedef struct in_addr t_in_addr;
-typedef struct pollfd t_pollfd;
-typedef struct sockaddr t_sockaddr;
-typedef struct	s_aton t_aton;
-
-struct	s_aton
-{
-	u_long		parts[4];
-	in_addr_t	val;
-	char		*c;
-	char		*endptr;
-	int			gotend;
-	int			n;
-};
+#include "ft_inet.h"
 
 unsigned long int ft_inet_addr(int value)
 {
@@ -29,7 +10,7 @@ unsigned long int ft_inet_addr(int value)
 
 int ft_inet_aton(const char *cp, t_in_addr *addr)
 {
-	t_aton		t;
+	t_aton	 	t;
 
 	t.c = (char *)cp;
 	t.n = 0;
@@ -82,4 +63,17 @@ int ft_inet_aton(const char *cp, t_in_addr *addr)
 	if (addr != NULL)
 		addr->s_addr = ft_htonl(t.val);
 	return (1);
+}
+
+unsigned short ft_htons(unsigned short value)
+{
+  return (value >> 8 | value << 8);
+}
+
+unsigned int ft_htonl(unsigned int value) // ca KIFFEEEE by scirciu
+{
+  char*c;
+
+  c = (char *)&value;
+  return (c[3] | c[2] << 8 | c[1] << 16 | c[0] << 24);
 }

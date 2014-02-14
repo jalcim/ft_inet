@@ -52,6 +52,7 @@ int main()
 		error();
 	}
 	serveur.sin_family = PF_INET;
+
 	serveur.sin_port = htons(PORT);
 //	serveur.sin_addr.s_addr = inet_addr(IP);
 	if (bind(sock, (t_sockaddr *)&serveur, size) == -1)
@@ -91,6 +92,33 @@ int main()
 
 void error()
 {
-	perror("error -> ");
-	exit(0);
+  perror("error -> ");
+  exit(0);
+}
+
+
+void read_file_sock(int socket, int fd)
+{
+  if (socket == -1 || buffer == NULL)
+    error();
+  while (write(sock, fd, 1024) > 0);
+}
+
+void read_file_sock(int socket, int fd)
+{
+  char *buffer;
+
+  buffer = (char *)malloc(1024 * sizeof(char));
+  strsock(socket, buffer);
+  write(buffer, fd, 1023);
+}
+
+void strsock(int socket, char *buffer)
+{
+  if (socket == -1 || buffer == NULL)
+    error();
+  while (read(socket, buffer, 1023) > 0)
+    if (sizeof(*buffer) > 0)
+      realloc(buffer, sizeof(*buffer) + 1024);
+  strncat(buffer, "\0", 1);
 }
