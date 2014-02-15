@@ -11,6 +11,7 @@
 #include <netdb.h>
 #include <stdio.h>
 #include <string.h>
+#include <poll.h>
 
 typedef struct sockaddr_in t_sockaddr_in;
 typedef struct in_addr t_in_addr;
@@ -38,5 +39,8 @@ void ft_sock_in_file(int socket, int fd);
 void ft_file_in_sock(int fd, int socket);
 void ft_recv_file(int socket, char *filename);
 void ft_send_file(int socket, char *filename);
+
+void ft_socktcp(int *sock, int port, t_sockaddr_in *serveur);
+void ft_waitsocktcp(int sock, t_pollfd *event, int size_fille, int time);
 
 void error();
