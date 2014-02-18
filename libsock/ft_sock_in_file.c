@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 04:45:51 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/15 10:16:35 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/02/18 02:48:46 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,6 @@ void ft_sock_in_file(int socket, int fd)
   char *buffer;
   int size;
 
-  if (!(buffer = (char *)malloc(1024 * sizeof(char))))
-	  error();
-  bzero(buffer, 1024);
   size = ft_fd_in_str(socket, buffer);
   write(fd, buffer, size);
   free(buffer);
@@ -65,9 +62,11 @@ int ft_fd_in_str(int fd, char *buffer)
 	if (fd == -1 || buffer == NULL)
 		error();
 
+	sizestr = 0;
 	size = 1024;
 	tmp = ft_strnew(1024);
-	bzero(tmp, 1024);
+	buffer = ft_strnew(1024);
+
 	while ((read(fd, tmp, 60)) > 0)
 	{
 		if ((sizestr + ft_strlen(tmp)) >= (size - sizestr))

@@ -6,38 +6,112 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:32:17 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/15 08:59:28 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/02/18 11:51:54 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libsock/ft_inet.h"
+#include "../libft/libft.h"
 #define PORT 1290
+#define MAX_CLIENT 50
 
 int main()
 {
-	int sock;
-	t_sockaddr_in serveur, client;
-	char *buffer;
-	t_pollfd event[1];
-	int err;
-	int size;
-	int compt;
+	t_server *server;
+	int pid;
 
-	if (!(buffer = (char *)malloc(1024 * sizeof(char))))
-		error("error malloc -> ");
-	bzero(buffer, sizeof(*buffer));
-	ft_socktcp(&sock, PORT, &serveur);
-	ft_waitsocktcp(sock, event, 0, -1);
-	size = sizeof(t_sockaddr);
-	if ((sock = accept(event[0].fd, (t_sockaddr *)&client, &size)) == -1)
-		error();
-	printf("connected\n");
-	ft_recv_file(sock, "file");
-
-	close(sock);
-	close(event[0].fd);
-	return (0);
+	server = ft_serv_init();
+	server->list = NULL;
+	server->0connection = 0;
+	pid = 1;
+	while (pid)
+	{
+		new_connect(server);
+		acceuil(server);
+		printf("papa\n");
+	}
+	ft_serv_end(server);
 }
+
+void acceuil(t_server *server)
+{//devie suivant la commande 
+	char cmd;
+	char *filename;
+	char *buffer;
+
+	ft_accept(server);
+	
+	if (!(server->pid = fork()))
+	{
+		cmd = cmd_sock(server);
+		if (cmd == 'd')
+			;//file recursif
+		else if (cmd == 'f')// f == file
+		{
+			filename = ft_recv_filename(server);
+			ft_recv_file(server->sock, filename);
+		}
+		else if (cmd == 'c')// c == chat
+		{
+			ft_fd_in_str(server->sock, buffer);
+			//envoie du buffer au shell via pipe
+		}
+		exit(0);
+	}
+}
+
+char cmd_sock(t_server *server)
+{
+	char cmd;
+
+	read(server->sock, &cmd, 1);
+	return (cmd);
+}
+
+char *ft_recv_filename(t_server *server)
+{
+	char *filename;
+
+	filename = ft_strnew(256);
+	read(server->sock, filename, 255);
+	filename[255] = '\0';
+	return (filename);
+}
+
+void new_connect(t_server *server)
+{
+	wait_connect(server);
+	server->connection++;
+	printf("connected\n");
+}
+
+void wait_connect(t_server *server)//int *sock, t_pollfd *event, int size_file)
+{//creation socket attente et acceptation de connection
+	if (!server->event)
+		server->event = (t_pollfd *)malloc(MAX_CLIENT * (int)sizeof(t_pollfd));
+	if (server->sock == -1)
+		ft_socktcp(&server->sock, PORT, &server->server);
+	ft_waitsocktcp(server->sock, server->event, sizeof(*server->event), -1);
+}
+
+void ft_accept(t_server *server)
+{
+	int size;
+
+	size = sizeof(t_sockaddr);
+	server->client = (t_client *)malloc(sizeof(t_client));
+	bzero(server->client, sizeof(t_client));
+	server->client->info = (t_sockaddr_in *)malloc(size);
+	bzero(server->client->info, size);
+
+	server->client->next = server->list;
+	server->list = server->client;
+
+	if ((server->sock = accept(server->event->fd, (t_sockaddr *)server->client->info, &size)) == -1)
+		error("accept -> ");
+}
+
+
 
 void error(char *strerr)
 {
