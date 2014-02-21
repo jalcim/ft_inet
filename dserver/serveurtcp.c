@@ -6,13 +6,13 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:32:17 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/18 11:51:54 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/02/21 17:55:25 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libsock/ft_inet.h"
 #include "../libft/libft.h"
-#define PORT 1290
+#define PORT 1000
 #define MAX_CLIENT 50
 
 int main()
@@ -22,13 +22,14 @@ int main()
 
 	server = ft_serv_init();
 	server->list = NULL;
-	server->0connection = 0;
+	server->connection = 0;
+	ft_socktcp(&server->sock, PORT, &server->server);
 	pid = 1;
 	while (pid)
 	{
+		printf("pere\n");
 		new_connect(server);
 		acceuil(server);
-		printf("papa\n");
 	}
 	ft_serv_end(server);
 }
@@ -39,10 +40,12 @@ void acceuil(t_server *server)
 	char *filename;
 	char *buffer;
 
+	printf("acceuil\n");
 	ft_accept(server);
 	
 	if (!(server->pid = fork()))
 	{
+		printf("fils\n");
 		cmd = cmd_sock(server);
 		if (cmd == 'd')
 			;//file recursif
@@ -89,9 +92,10 @@ void wait_connect(t_server *server)//int *sock, t_pollfd *event, int size_file)
 {//creation socket attente et acceptation de connection
 	if (!server->event)
 		server->event = (t_pollfd *)malloc(MAX_CLIENT * (int)sizeof(t_pollfd));
-	if (server->sock == -1)
-		ft_socktcp(&server->sock, PORT, &server->server);
+//	if (server->sock == -1)
+//		ft_socktcp(&server->sock, PORT, &server->server);
 	ft_waitsocktcp(server->sock, server->event, sizeof(*server->event), -1);
+	printf("ok\n");
 }
 
 void ft_accept(t_server *server)
@@ -110,8 +114,6 @@ void ft_accept(t_server *server)
 	if ((server->sock = accept(server->event->fd, (t_sockaddr *)server->client->info, &size)) == -1)
 		error("accept -> ");
 }
-
-
 
 void error(char *strerr)
 {

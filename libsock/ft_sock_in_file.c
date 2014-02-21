@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 04:45:51 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/18 02:48:46 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/02/21 15:55:03 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void ft_send_file(int socket, char *filename)
 	int fd;
 	if ((fd = open(filename, O_RDONLY, S_IRUSR)) == -1)
 		error();
-	ft_file_in_sock(fd, socket);
+	ft_sock_in_file(fd, socket);
 }
 
 void ft_recv_file(int socket, char *filename)
@@ -27,18 +27,6 @@ void ft_recv_file(int socket, char *filename)
 	if ((fd = open(filename, O_CREAT | O_WRONLY, S_IWUSR)) == - 1)
 		error();
 	ft_sock_in_file(socket, fd);
-}
-
-void ft_file_in_sock(int fd, int socket)
-{
-	char *buffer;
-	int size;
-	if (!(buffer = (char *)malloc(1024 * sizeof(char))))
-		error();
-	bzero(buffer, 1024);
-	size = ft_fd_in_str(fd, buffer);
-	write(socket, buffer, size);
-	free(buffer);
 }
 
 void ft_sock_in_file(int socket, int fd)

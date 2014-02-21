@@ -58,18 +58,17 @@ unsigned int ft_htonl(unsigned int value);
 
 int ft_fd_in_str(int fd, char *buffer);
 void ft_sock_in_file(int socket, int fd);
-void ft_file_in_sock(int fd, int socket);
 void ft_recv_file(int socket, char *filename);
 void ft_send_file(int socket, char *filename);
 
 void ft_socktcp(int *sock, int port, t_sockaddr_in *serveur);
 void ft_waitsocktcp(int sock, t_pollfd *event, int size_fille, int time);
 
+t_server *ft_serv_init();
 void acceuil(t_server *server);
 char cmd_sock(t_server *server);
 char *ft_recv_filename(t_server *server);
 void new_connect(t_server *server);
 void wait_connect(t_server *server);
 void ft_accept(t_server *server);
-t_server *ft_serv_init();
 void ft_serv_end(t_server *server);

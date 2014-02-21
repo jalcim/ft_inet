@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 08:50:10 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/18 08:58:50 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/02/21 15:55:43 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,13 @@ void ft_waitsocktcp(int sock, t_pollfd *event, int size_fille, int time)
 {//attente de connection et listage
 	static int compt = -1;
 
+	printf("wait\n");
     event->fd = sock;
     event->events = POLLIN;
+	printf("poll\n");
     if ((poll(event, sizeof(t_pollfd), time)) == -1)
         error("poll -> ");
+	printf("listen\n");
     if (listen(event[++compt].fd, size_fille) == -1)
         error("listen -> ");
 }
@@ -53,6 +56,6 @@ void ft_serv_end(t_server *server)
     compt = -1;
     while (++compt < server->connection)
         close(server->event[compt].fd);
-//  free(server);
+	free(server);
     server = NULL;
 }
