@@ -6,32 +6,21 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/11/22 16:35:45 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/21 13:11:29 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/02/26 09:06:08 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
+#include "libft.h"
 #include <stdlib.h>
 #include <string.h>
 
 char *ft_strnew(size_t size)
 {
-  size_t compt;
-  char *s1;
+  char *str;
 
-  compt = -1;
-
-  if (!(s1 = (char *)malloc ((size + 1) * sizeof(char))))
+  if (!(str = (char *)malloc(size * sizeof(char))))
       return (NULL);
+  ft_bzero(str, size);
 
-  while (++compt <= size)
-    {
-      *s1 = '\0';
-
-       s1++;
-    }
-  *s1 = '\0';
-  s1 -= compt;
-
-  return (s1);
+  return (str);
 }

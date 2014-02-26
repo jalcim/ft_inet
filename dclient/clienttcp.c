@@ -6,13 +6,13 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:03:39 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/21 17:58:26 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/02/22 23:37:39 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libsock/ft_inet.h"
 #include "../libft/libft.h"
-#define PORT 1300
+#define PORT 3000
 #define IP "127.0.0.1"
 
 int ft_cli_socktcp(t_sockaddr_in *sin);
@@ -29,8 +29,12 @@ int main(int argc, char **argv)
 
 	sock = ft_cli_socktcp(&sin);
 
-	if (connect(sock, (t_sockaddr*)&sin, sizeof(t_sockaddr)))
+	printf("port = %d\n", (int)sin.sin_port);
+	errno = 0;
+	if ((err = connect(sock, (t_sockaddr*)&sin, sizeof(t_sockaddr))))
 	{
+		if (errno == EACCES)
+			printf("acces refuser");
 		close(sock);
 		error();
 	}
@@ -68,9 +72,10 @@ int ft_cli_socktcp(t_sockaddr_in *sin)
 
 	if ((sock = socket(PF_INET, SOCK_STREAM, 0)) == -1)
 		error();
-
+	printf(inet_addr(IP) == ft_inet_addr(IP) ? "" : "origin %d : ft %d\n", (int)inet_addr(IP), (int)ft_inet_addr(IP));
 	sin->sin_addr.s_addr = ft_inet_addr(IP);
 	sin->sin_family = PF_INET;
+	printf(htons(PORT) == ft_htons(PORT) ? "" : "htonl = %u\nft_htonl = %u\n", htons(PORT), ft_htons(PORT));
 	sin->sin_port = ft_htons(PORT);
 
 	printf("connect\n");
@@ -83,7 +88,7 @@ void error()
 	exit(errno);
 }
 /*
-printf(inet_addr(IP) == ft_inet_addr(IP) ? "" : "origin %d : ft %d\n", (int)inet_addr(IP), (int)ft_inet_addr(IP));
 
-	printf(htons(PORT) == ft_htons(PORT) ? "" : "htonl = %u\nft_htonl = %u\n", htons(PORT), ft_htons(PORT));
+
+
 */

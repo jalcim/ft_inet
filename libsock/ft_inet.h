@@ -25,9 +25,10 @@ struct s_server
 {
     int pid;
     int sock;
-    t_sockaddr_in server;
-    t_pollfd *event;
     int connection;
+
+    t_sockaddr_in *server;
+    t_pollfd *event;
 
     t_client *list;
     t_client *client;
@@ -56,7 +57,7 @@ int ft_inet_aton(const char *cp, struct in_addr *addr);
 unsigned short ft_htons(unsigned short value);
 unsigned int ft_htonl(unsigned int value);
 
-int ft_fd_in_str(int fd, char *buffer);
+char *ft_fd_in_str(int fd);//, char **buffer);
 void ft_sock_in_file(int socket, int fd);
 void ft_recv_file(int socket, char *filename);
 void ft_send_file(int socket, char *filename);

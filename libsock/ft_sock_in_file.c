@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 04:45:51 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/21 15:55:03 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/02/26 09:42:57 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,41 +34,33 @@ void ft_sock_in_file(int socket, int fd)
   char *buffer;
   int size;
 
-  size = ft_fd_in_str(socket, buffer);
+  buffer = ft_fd_in_str(socket);//, &buffer);
+  size = ft_strlen(buffer);
   write(fd, buffer, size);
   free(buffer);
 }
 
-int ft_fd_in_str(int fd, char *buffer)
+char *ft_fd_in_str(int fd)//, char **buffer)
 {
 	char *tmp;
 	int sizestr;
-	int size;
-	int itmp;
-	char compt;
+	int oct;
+	char *buffer;
 
-	if (fd == -1 || buffer == NULL)
-		error();
-
-	sizestr = 0;
-	size = 1024;
+	sizestr = 1;
 	tmp = ft_strnew(1024);
-	buffer = ft_strnew(1024);
-
-	while ((read(fd, tmp, 60)) > 0)
+	buffer = ft_strnew(sizestr);
+	while ((oct = read(fd, tmp, 60)) > 0)
 	{
-		if ((sizestr + ft_strlen(tmp)) >= (size - sizestr))
-		{
-			ft_strcat(buffer, tmp);
-			if (!(ft_realloc(buffer, sizeof(*buffer) + itmp)))
-				error();
-			size += 1024;
-		}
-		strncat(buffer, tmp, ft_strlen(tmp));
-		sizestr = ft_strlen(buffer);
+		tmp[oct] = '\0';
+		if (!(buffer = realloc(buffer, sizestr + oct)))
+			error();
+
+		strncat(buffer, tmp, oct);
+		buffer[sizestr + oct] = '\0';
+		sizestr += oct;
 	}
-	buffer[sizestr] = '\0';
 	free(tmp);
 
-  return (sizestr);
+  return (buffer);
 }
