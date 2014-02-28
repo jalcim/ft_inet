@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -7,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:32:17 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/26 21:16:37 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/02/28 12:58:28 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,28 +21,40 @@
 
 int main()
 {
+	shell_server();
+//	pause();
+	sleep(10);
+	return (0);
+}
+
+void servershell(int pid)
+{
 	t_server *server;
 
+	write(1, "server\n", 7);
 	server = ft_serv_init();
 	ft_socktcp(&server->sock, PORT, server->server);
-
 	server->pid = 1;
+
 //	while (server->pid)
 //	{
 		new_connect(server);
-		printf("y\n");
-		acceuil(server);
-		printf("d\n");
+		acceuil(server, pid);
 		waitpid(server->pid, NULL, 0);
 //	}
-		printf("f\n");
+
 	ft_serv_end(server);
 	printf("end\n");
 }
-
-void acceuil(t_server *server)
+//protocol :c/x: envoi du mode, envoi du buffer
+//protocol :f: envoi du mode, envoi du nom de fichier, envoi du buffer
+//protocol :d: envoi du mode, envoi du nombre de fichier, (re:)envoi du nom de fichier, envoi du buffer(goto re;)
+//protocol :modif: envoi du nom d'utilisateur avant le mode
+//protocol :modif: envoi de la taille de chaque string apres le mode sur 1 unsigned int (si la taille est au max de l'uint la fonction d'envoi/reception devien recursif)
+void acceuil(t_server *server, int pid)
 {//devie suivant la commande 
 	char cmd;
+//	char *user
 	char *filename;
 	char *buffer;
 
@@ -55,6 +66,8 @@ void acceuil(t_server *server)
 	if (!(server->pid = fork()))
 	{
 		printf("fils\n");
+//		if (!(user = getenv("USER=")))//pour les infos client
+//			error();
 		cmd = cmd_sock(server);
 		printf("cmd = :%c:\n", cmd);
 		if (cmd == 'd')
@@ -66,13 +79,19 @@ void acceuil(t_server *server)
 		}
 		else if (cmd == 'c')// c == chat
 		{
-			printf("fd_in_str\n");
 			buffer = ft_fd_in_str(server->sock);//, &buffer);
-			printf("acceuil ~:~ buffer = :%s:\n", buffer);
-			//envoie du buffer au shell via pipe
+			printf("serv buffer = :%s:\n", buffer);
+			servcom(cmd, buffer, pid);//envoie du buffer au shell via pipe
 		}
 		else if (cmd == 'x')
-			printf("exec not gered\n");
+		{
+			buffer = ft_fd_in_str(server->sock);//, &buffer);
+			printf("serv buffer = :%s:\n", buffer);
+			servcom(cmd, buffer, pid);//envoie du buffer au shell via pipe
+		}
+		else
+			printf("no mode %c bad argument\n", cmd);
+		printf("mort du fils\n");
 		exit(0);
 	}
 }
@@ -91,8 +110,9 @@ char *ft_recv_filename(t_server *server)
 	int oct;
 
 	filename = ft_strnew(SIZE_FILENAME);
-	oct = read(server->sock, filename, SIZE_FILENAME - 1);
+	oct = read(server->sock, filename, SIZE_FILENAME);
 	filename[oct] = '\0';
+
 	return (filename);
 }
 

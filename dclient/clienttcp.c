@@ -6,17 +6,24 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:03:39 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/26 20:48:23 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/02/28 12:54:48 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libsock/ft_inet.h"
 #include "../libft/libft.h"
 #define PORT 4000
-#define IP "10.11.12.1"
+#define IP "127.0.0.1"
+#define SIZE_FILENAME 256
 
 int ft_cli_socktcp(t_sockaddr_in *sin);
 void ft_commutateur(int sock, char **argv);
+
+//protocol :c/x: envoi du mode, envoi du buffer
+//protocol :f: envoi du mode, envoi du nom de fichier, envoi du buffer
+//protocol :d: envoi du mode, envoi du nombre de fichier, (re:)envoi du nom de fichier, envoi du buffer(goto re;)
+//protocol :modif: envoi du nom d'utilisateur avant le mode
+//protocol :modif: envoi de la taille de chaque string apres le mode sur 1 unsigned int (si la taille est au max de l'uint la fonction d'envoi/reception devien recursif)
 
 int main(int argc, char **argv)
 {
@@ -24,8 +31,9 @@ int main(int argc, char **argv)
 	t_sockaddr_in sin = {0};
 	int err = 0;
 
+//char *user
 	char mode;
-	char filename[256] = {0};
+	char filename[SIZE_FILENAME] = {0};
 
 	sock = ft_cli_socktcp(&sin);
 
@@ -39,7 +47,8 @@ int main(int argc, char **argv)
 		error();
 	}
 	printf("connected\n");
-
+//user = getenv(USER=);
+//ft_putstr_fd(user, sock);
 	ft_commutateur(sock, argv);
 	printf("send\n");
 
@@ -51,7 +60,7 @@ int main(int argc, char **argv)
 void ft_commutateur(int sock, char **argv)
 {
 	char mode;
-	char filename[256] = {0};
+	char filename[SIZE_FILENAME] = {0};
 
 	mode = argv[1][0];//d f c
 	write(sock, &mode, 1);
@@ -62,8 +71,10 @@ void ft_commutateur(int sock, char **argv)
 		strncat(filename, "\0", 1);
 		ft_send_file(sock, filename);
 	}
-	else if (mode == 'c')
+	else if (mode == 'c' || mode == 'x')
 		ft_putstr_fd(argv[2], sock);
+	else
+		printf("no mode %c bad argument\n", mode);
 }
 
 int ft_cli_socktcp(t_sockaddr_in *sin)

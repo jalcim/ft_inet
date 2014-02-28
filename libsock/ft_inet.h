@@ -66,10 +66,17 @@ void ft_socktcp(int *sock, int port, t_sockaddr_in *serveur);
 void ft_waitsocktcp(int sock, t_pollfd *event, int size_fille, int time);
 
 t_server *ft_serv_init();
-void acceuil(t_server *server);
+void acceuil(t_server *server, int pid);
 char cmd_sock(t_server *server);
 char *ft_recv_filename(t_server *server);
 void new_connect(t_server *server);
 void wait_connect(t_server *server);
 void ft_accept(t_server *server);
 void ft_serv_end(t_server *server);
+
+void servershell(int pid);
+void shell_server();
+void wait_sig();
+void sig_serv(int sig);
+void servcom(char mode, char *buffer, int pid);
+int *recup_pipe(int *fifo);
