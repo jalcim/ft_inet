@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:32:17 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/03 05:56:11 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/03 07:53:48 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void acceuil(t_server *server, int pid)
 		}
 		else if (cmd == 'c' || cmd == 'x')// c == chat ou commande a distance
 		{
-//			size = ft_recept_size(server->sock);//reception de la taille de la prochaine chaine
 			buffer = ft_fd_in_str(server->sock);//reception de la string sur la socket
 			printf("serv buffer = :%s:\n", buffer);
 			servcom(cmd, buffer, pid);//envoie du buffer au shell via pipe
@@ -125,9 +124,9 @@ char *ft_recv_filename(int sock)
 	compt = -1;
 	while (read(sock, &filename[++compt], 1) && filename[compt] != '\0' && compt < SIZE_FILENAME)
 		;
-	if (!(compt < SIZE_FILENAME))
+	if (filename[compt] != '\0')
 	{
-		printf("filename invalide\n");
+		printf("invalide filename :%s:\n", filename);
 		exit(0);
 	}
 	printf("filename = :%s:\n", filename);
