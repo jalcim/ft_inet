@@ -67,8 +67,9 @@ void ft_waitsocktcp(int sock, t_pollfd *event, int size_fille, int time);
 
 t_server *ft_serv_init();
 void acceuil(t_server *server, int pid);
-char cmd_sock(t_server *server);
-char *ft_recv_filename(t_server *server);
+char cmd_sock(int sock);
+int ft_recept_size(int sock);
+char *ft_recv_filename(int sock);
 void new_connect(t_server *server);
 void wait_connect(t_server *server);
 void ft_accept(t_server *server);

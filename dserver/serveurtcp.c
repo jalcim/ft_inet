@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:32:17 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/28 12:58:28 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/03 05:35:37 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void servershell(int pid)
 	write(1, "server\n", 7);
 	server = ft_serv_init();
 	ft_socktcp(&server->sock, PORT, server->server);
-	server->pid = 1;
 
+//	server->pid = 1;
 //	while (server->pid)
 //	{
 		new_connect(server);
@@ -46,6 +46,7 @@ void servershell(int pid)
 	ft_serv_end(server);
 	printf("end\n");
 }
+//protocol :structure de control contenand les infos de livraison(int size, nb buffer, (char **)nom fichier -> (char ***)buffer) char buffer[][]
 //protocol :c/x: envoi du mode, envoi du buffer
 //protocol :f: envoi du mode, envoi du nom de fichier, envoi du buffer
 //protocol :d: envoi du mode, envoi du nombre de fichier, (re:)envoi du nom de fichier, envoi du buffer(goto re;)
@@ -57,6 +58,7 @@ void acceuil(t_server *server, int pid)
 //	char *user
 	char *filename;
 	char *buffer;
+	int size;
 
 	printf("acceuil\n");
 	ft_accept(server);
@@ -68,51 +70,66 @@ void acceuil(t_server *server, int pid)
 		printf("fils\n");
 //		if (!(user = getenv("USER=")))//pour les infos client
 //			error();
-		cmd = cmd_sock(server);
+		cmd = cmd_sock(server->sock);
 		printf("cmd = :%c:\n", cmd);
 		if (cmd == 'd')
 			printf("directory not gered\n");//file recursif
 		else if (cmd == 'f')// f == file
 		{
-			filename = ft_recv_filename(server);
+			
+			filename = ft_recv_filename(server->sock);
 			ft_recv_file(server->sock, filename);
+			//archiveur(cmd, filename, buffer);
 		}
-		else if (cmd == 'c')// c == chat
+		else if (cmd == 'c' || cmd == 'x')// c == chat ou commande a distance
+		{
+//			size = ft_recept_size(server->sock);//reception de la taille de la prochaine chaine
+			buffer = ft_fd_in_str(server->sock);//reception de la string sur la socket
+			printf("serv buffer = :%s:\n", buffer);
+			servcom(cmd, buffer, pid);//envoie du buffer au shell via pipe
+		}
+/*		else if (cmd == 'x')
 		{
 			buffer = ft_fd_in_str(server->sock);//, &buffer);
 			printf("serv buffer = :%s:\n", buffer);
 			servcom(cmd, buffer, pid);//envoie du buffer au shell via pipe
 		}
-		else if (cmd == 'x')
-		{
-			buffer = ft_fd_in_str(server->sock);//, &buffer);
-			printf("serv buffer = :%s:\n", buffer);
-			servcom(cmd, buffer, pid);//envoie du buffer au shell via pipe
-		}
-		else
+*/		else
 			printf("no mode %c bad argument\n", cmd);
 		printf("mort du fils\n");
 		exit(0);
 	}
 }
 
-char cmd_sock(t_server *server)
+char cmd_sock(int sock)
 {
 	char cmd;
 
-	read(server->sock, &cmd, 1);
+	read(sock, &cmd, 1);
 	return (cmd);
 }
 
-char *ft_recv_filename(t_server *server)
+int ft_recept_size(int sock)
+{
+	char size[4];
+
+	read(sock, size, 4);
+	return (atoi(size));
+}
+char *ft_recv_filename(int sock)
 {
 	char *filename;
-	int oct;
+	int compt;
 
 	filename = ft_strnew(SIZE_FILENAME);
-	oct = read(server->sock, filename, SIZE_FILENAME);
-	filename[oct] = '\0';
-
+	compt = -1;
+	while (read(sock, &filename[++compt], 1) && filename[compt] != '\0' && compt < SIZE_FILENAME)
+		;
+	if (!(compt < SIZE_FILENAME))
+	{
+		printf("filename invalide\n");
+		exit(0);
+	}
 	return (filename);
 }
 

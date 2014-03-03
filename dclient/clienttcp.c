@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:03:39 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/28 12:54:48 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/03 01:00:25 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int main(int argc, char **argv)
 
 void ft_commutateur(int sock, char **argv)
 {
+	char csize[4];
+	int size;
 	char mode;
 	char filename[SIZE_FILENAME] = {0};
 
@@ -69,10 +71,21 @@ void ft_commutateur(int sock, char **argv)
 	{
 		strncpy(filename, argv[2], 255);
 		strncat(filename, "\0", 1);
+
+//		size = ft_strlen(filename);
+//		tmp = ft_itoa(size);
+//		write(sock, tmp, 4);
+		write(sock, filename, ft_strlen(filename) + 1);
 		ft_send_file(sock, filename);
 	}
 	else if (mode == 'c' || mode == 'x')
+	{
+//		size = ft_strlen(argv[2]);
+//		tmp = ft_itoa(size);
+//		write(sock, tmp, 4);
+
 		ft_putstr_fd(argv[2], sock);
+	}
 	else
 		printf("no mode %c bad argument\n", mode);
 }
