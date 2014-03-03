@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 04:45:51 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/28 12:49:16 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/03 05:55:26 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,6 @@ char *ft_fd_in_str(int fd)//, char **buffer)
 		sizestr += oct;
 	}
 	free(tmp);
+	printf("buffer = :%s:\n", buffer);
   return (buffer);
 }

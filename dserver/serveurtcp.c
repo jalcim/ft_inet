@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:32:17 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/03 05:35:37 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/03 05:56:11 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ char *ft_recv_filename(int sock)
 		printf("filename invalide\n");
 		exit(0);
 	}
+	printf("filename = :%s:\n", filename);
 	return (filename);
 }
 

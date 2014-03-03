@@ -6,14 +6,14 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:03:39 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/03 01:00:25 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/03 05:48:52 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libsock/ft_inet.h"
 #include "../libft/libft.h"
 #define PORT 4000
-#define IP "127.0.0.1"
+#define IP "10.11.11.1"
 #define SIZE_FILENAME 256
 
 int ft_cli_socktcp(t_sockaddr_in *sin);
