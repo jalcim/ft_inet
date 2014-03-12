@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:32:17 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/12 01:08:00 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/12 10:38:02 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <signal.h>
 #include <sys/types.h> 
 #include <sys/wait.h>
-#define PORT 24000
+#define PORT 34000
 #define MAX_CLIENT 50
 #define SIZE_FILENAME 256
 
@@ -78,8 +78,7 @@ void acceuil(t_server *server, int pid)
 		printf("cmd = :%c:\n", cmd);
 		if (cmd == 'd' || cmd == 'f')
 		{
-			//archiveur(cmd, sock);
-			nb_dir = 1;
+			nb_dir = 0;
 			if (cmd == 'd')
 				nb_dir = nb_dir_sock(server->sock);
 			ft_recv_file(server->sock, nb_dir);
@@ -93,10 +92,9 @@ void acceuil(t_server *server, int pid)
 		else
 			printf("no mode %c bad argument\n", cmd);
 		ft_putstr("server : mort du processus fils\n");
-//		close(sock);
+		close(server->sock);
 		exit(0);
 	}
-//	close(sock);
 }
 
 int nb_dir_sock(int sock)
@@ -107,6 +105,7 @@ int nb_dir_sock(int sock)
 	compt = -1;
 	while (compt <= 255 && read(sock, &nb_dir[++compt], 1) && nb_dir[compt] != '\0')
 		;
+	ft_putstr(nb_dir);
 	if (nb_dir[compt] != '\0')
 		return (0);
 	return (atoi(nb_dir));

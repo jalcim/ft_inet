@@ -60,7 +60,7 @@ unsigned int ft_htonl(unsigned int value);
 
 char *ft_fd_in_str(int fd);//, char **buffer);
 void ft_sock_in_file(int socket, int fd);
-void ft_recv_file(int socket, int nb);
+int ft_recv_file(int socket, int nb);
 void ft_send_file(int socket, char *filename, int nb);
 void ft_send_dir(int socket, char *name_dir);
 

@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 04:45:51 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/12 01:07:25 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/12 10:29:06 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,34 +20,52 @@ void ft_send_file(int socket, char *filename, int nb)
 	int fd;
 
 	if (rep == NULL && nb)
+	{
+		ft_putstr_fd(filename, socket);
 		if (!(rep = opendir(filename)))
 			error();
-
+	}
 	else if ((fd = open(filename, O_RDONLY, S_IRUSR)) == -1)
-		error();
-	ft_sock_in_file(fd, socket);
-
+	{
+		if (!fd)
+			error();
+		ft_sock_in_file(fd, socket);
+	}
 	if (nb && (Rfille = readdir(rep)))
 	{
-		if (--nb)
+		if (nb--)
 			ft_send_file(socket, Rfille->d_name, nb);
 	}
 }
 
-void ft_recv_file(int socket, int nb)
+int ft_recv_file(int socket, int nb)
 {
+	static char download[500] = "./download/";
+	static int first = 1;
 	int fd;
-	char download[500] = "./download/";
 	char *filename;
+	int save;
 
 	filename = ft_recv_filename(socket);
-	ft_strcat(download, filename);
-	if ((fd = open(download, O_CREAT | O_WRONLY, S_IWUSR)) == - 1)
-		error();
+	if (first && nb)
+	{
+		ft_strcat(download, filename);
+		mkdir(download, 0777);
+		ft_strcat(download, "/");
+		save = ft_strlen(download) + 1;
+	}
+	ft_strcat(download + save, filename);
+	if (!first && (fd = open(download, O_CREAT | O_WRONLY, S_IWUSR)) == - 1)
+	{
+		if (!fd)
+			error();
+		ft_sock_in_file(socket, fd);
+	}
+	first = 0;
+	if (nb--)
+		first = ft_recv_file(socket, nb);
 
-	ft_sock_in_file(socket, fd);
-	if (--nb)
-		ft_recv_file(socket, nb);
+	return (1);
 }
 
 void ft_sock_in_file(int socket, int fd)
@@ -82,7 +100,7 @@ char *ft_fd_in_str(int fd)//, char **buffer)
 		sizestr += oct;
 	}
 	free(tmp);
-	printf("buffer = :%s:\n", buffer);
+	printf("ft_in_str buffer = :%s:\n", buffer);
   return (buffer);
 }
 
