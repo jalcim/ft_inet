@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 04:45:51 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/12 14:01:30 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/12 14:14:43 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ char *ft_fd_in_str(int fd)//, char **buffer)
 	buffer = ft_strnew(sizestr);
 	while ((oct = read(fd, tmp, 60)) > 0)
 	{
+		ft_putstr(tmp);
 		tmp[oct] = '\0';
 		if (!(buffer = (char *)realloc(buffer, sizestr + oct)))
 			error();
@@ -105,7 +106,7 @@ char *ft_fd_in_str(int fd)//, char **buffer)
 		sizestr += oct;
 	}
 	free(tmp);
-	printf("ft_in_str buffer = :%s:\n", buffer);
+	printf("ft_fd_in_str buffer = :%s:\n", buffer);
   return (buffer);
 }
 

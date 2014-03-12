@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:03:39 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/12 14:03:10 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/12 14:12:49 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,10 @@ void ft_commutateur(int sock, char **argv)
 		{
 			nb = ft_compt_dir(filename);
 			nb_file = ft_itoa(nb);//a elliminer avec ft_send_dir
-			write(sock, filename, ft_strlen(filename) + 1);
 			ft_putendl_fd(nb_file, 1);
 			write(sock, nb_file, ft_strlen(nb_file));
 			write(sock, "\0", 1);
+			write(sock, filename, ft_strlen(filename) + 1);
 			ft_send_file(sock, filename, nb);
 		}
 	}
