@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 04:45:51 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/12 10:29:06 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/12 13:31:22 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,14 @@ void ft_send_file(int socket, char *filename, int nb)
 		if (!(rep = opendir(filename)))
 			error();
 	}
-	else if ((fd = open(filename, O_RDONLY, S_IRUSR)) == -1)
+	else if ((fd = open(filename, O_RDONLY, S_IRUSR)))
 	{
 		if (!fd)
 			error();
 		ft_sock_in_file(fd, socket);
 	}
+	else
+		error();
 	if (nb && (Rfille = readdir(rep)))
 	{
 		if (nb--)
@@ -40,7 +42,7 @@ void ft_send_file(int socket, char *filename, int nb)
 
 int ft_recv_file(int socket, int nb)
 {
-	static char download[500] = "./download/";
+//	static char download[500] = "./download/";
 	static int first = 1;
 	int fd;
 	char *filename;
@@ -49,13 +51,13 @@ int ft_recv_file(int socket, int nb)
 	filename = ft_recv_filename(socket);
 	if (first && nb)
 	{
-		ft_strcat(download, filename);
-		mkdir(download, 0777);
-		ft_strcat(download, "/");
-		save = ft_strlen(download) + 1;
+//		ft_strcat(download, filename);
+		mkdir(filename, 0777);
+//		ft_strcat(download, "/");
+//		save = ft_strlen(download) + 1;
 	}
-	ft_strcat(download + save, filename);
-	if (!first && (fd = open(download, O_CREAT | O_WRONLY, S_IWUSR)) == - 1)
+//	ft_strcat(download + save, filename);
+	if (!first && (fd = open(filename, O_CREAT | O_WRONLY, S_IWUSR)))
 	{
 		if (!fd)
 			error();
