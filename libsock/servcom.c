@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/28 01:07:00 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/28 13:08:45 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/11 19:12:21 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void shell_server()
 	int pid;
 	int fifo[2];
 
-	if (!(pid = fork()))
+	if (pid = fork())
 		return ;//pere retourne au shell
 
 	pipe(fifo);
@@ -32,17 +32,15 @@ void shell_server()
 
 void wait_sig()
 {
-	int pid;
-
 	signal(SIGUSR1, sig_serv);
 	signal(SIGUSR2, sig_serv);
 
-//	if (!(pid = fork()))
-	write(1, "wait\n", 5);
-	pause();
-	printf("fin de transmition\n");
-//	wait_sig();
-	exit(0);
+	while (1)
+	{
+		write(1, "wait_sig\n", 9);
+		pause();
+		write(1, "end_sig\n", 8);
+	}
 }
 
 void sig_serv(int sig)
@@ -50,15 +48,24 @@ void sig_serv(int sig)
 	int *fifo;
 	char *buffer;
 
+	int pid;
+
+	if ((pid = fork()))
+		return ;
+
 	fifo = recup_pipe(NULL);
 	close(fifo[1]);
 	buffer = ft_fd_in_str(fifo[0]);//lecture_pipe dans buffer;
-	printf("buffer sig_serv = :%s:\n", buffer);
+	write(1, buffer, ft_strlen(buffer));
+	write(1, "\n", 1);
+//	printf("buffer sig_serv = :%s:\n", buffer);
 	if (sig == SIGUSR1)//si c'est un chat
-		printf("fonction_chat_minishell(buffer);\n");//fonction_chat_minishell(buffer);
+		ft_putstr("fonction_chat_minishell(buffer);\n");//fonction_chat_minishell(buffer);
 	else if (sig == SIGUSR2)//si c'est une commande
-		printf("fonction_de_traitement(buffer);\n");//fonction_de_traitement(buffer);
+		ft_putstr("fonction_de_traitement(buffer);\n");//fonction_de_traitement(buffer);
 	free(buffer);
+	write(1, "fin de transmition\n", 19);
+	exit(0);
 }
 
 //partie server

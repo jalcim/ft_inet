@@ -12,7 +12,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <poll.h>
+#include <dirent.h>
 
+typedef struct dirent t_dirent;
 typedef struct sockaddr_in t_sockaddr_in;
 typedef struct in_addr t_in_addr;
 typedef struct pollfd t_pollfd;
@@ -24,19 +26,18 @@ typedef struct s_client t_client;
 struct s_server
 {
     int pid;
-    int sock;
     int connection;
-
-    t_sockaddr_in *server;
-    t_pollfd *event;
-
+	t_sockaddr_in *server;
+	int sock;
     t_client *list;
     t_client *client;
 };
 
 struct s_client
 {
+	int port;
     t_sockaddr_in *info;
+    t_pollfd *event;
     t_client *next;
 };
 
@@ -59,8 +60,9 @@ unsigned int ft_htonl(unsigned int value);
 
 char *ft_fd_in_str(int fd);//, char **buffer);
 void ft_sock_in_file(int socket, int fd);
-void ft_recv_file(int socket, char *filename);
-void ft_send_file(int socket, char *filename);
+void ft_recv_file(int socket, int nb);
+void ft_send_file(int socket, char *filename, int nb);
+void ft_send_dir(int socket, char *name_dir);
 
 void ft_socktcp(int *sock, int port, t_sockaddr_in *serveur);
 void ft_waitsocktcp(int sock, t_pollfd *event, int size_fille, int time);
@@ -68,12 +70,13 @@ void ft_waitsocktcp(int sock, t_pollfd *event, int size_fille, int time);
 t_server *ft_serv_init();
 void acceuil(t_server *server, int pid);
 char cmd_sock(int sock);
-int ft_recept_size(int sock);
+int nb_dir_sock(int sock);
+//int ft_recept_size(int sock);
 char *ft_recv_filename(int sock);
 void new_connect(t_server *server);
 void wait_connect(t_server *server);
 void ft_accept(t_server *server);
-void ft_serv_end(t_server *server);
+void ft_serv_end();
 
 void servershell(int pid);
 void shell_server();

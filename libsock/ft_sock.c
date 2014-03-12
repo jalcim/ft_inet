@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 08:50:10 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/28 01:54:20 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/12 00:53:22 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void ft_socktcp(int *sock, int port, t_sockaddr_in *serveur)
 		error("bind -> ");
 	}
 }
-
 
 void ft_waitsocktcp(int sock, t_pollfd *event, int size_fille, int time)
 {//attente de connection et listage
@@ -56,16 +55,4 @@ t_server *ft_serv_init()
 	server->list = NULL;
     server->connection = 0;
 	return (server);
-}
-
-void ft_serv_end(t_server *server)
-{//detruit la structure server standar
-    int compt;
-
-    close(server->sock);
-    compt = -1;
-    while (++compt < server->connection)
-        close(server->event[compt].fd);
-	free(server);
-    server = NULL;
 }
