@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 04:45:51 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/12 13:31:22 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/12 14:01:30 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,17 @@ int ft_recv_file(int socket, int nb)
 	filename = ft_recv_filename(socket);
 	if (first && nb)
 	{
+		ft_putstr("dir = ");
+		ft_putendl(filename);
 //		ft_strcat(download, filename);
 		mkdir(filename, 0777);
 //		ft_strcat(download, "/");
 //		save = ft_strlen(download) + 1;
 	}
 //	ft_strcat(download + save, filename);
-	if (!first && (fd = open(filename, O_CREAT | O_WRONLY, S_IWUSR)))
+	if ((!first || !nb) && (fd = open(filename, O_CREAT | O_WRONLY, S_IWUSR)))
 	{
+		ft_putendl(filename);
 		if (!fd)
 			error();
 		ft_sock_in_file(socket, fd);

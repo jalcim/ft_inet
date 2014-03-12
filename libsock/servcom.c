@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/28 01:07:00 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/11 19:12:21 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/12 13:47:21 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void shell_server()
 	int pid;
 	int fifo[2];
 
-	if (pid = fork())
+/*	if (pid = fork())
 		return ;//pere retourne au shell
-
+*/
 	pipe(fifo);
 	recup_pipe(fifo);
 
@@ -50,9 +50,9 @@ void sig_serv(int sig)
 
 	int pid;
 
-	if ((pid = fork()))
+/*	if ((pid = fork()))
 		return ;
-
+*/
 	fifo = recup_pipe(NULL);
 	close(fifo[1]);
 	buffer = ft_fd_in_str(fifo[0]);//lecture_pipe dans buffer;
