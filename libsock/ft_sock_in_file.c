@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 04:45:51 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/12 16:15:54 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/12 16:17:43 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void ft_sock_in_file(int socket, int fd)
   int size;
 
   buffer = ft_fd_in_str(socket);
+  ft_putstr("sock_in_file = ");
+  ft_putendl(buffer);
   size = ft_strlen(buffer) + 1;
   write(fd, buffer, size);
   free(buffer);
