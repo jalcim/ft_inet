@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 04:45:51 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/12 14:43:57 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/12 16:05:33 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,15 @@ void ft_send_file(int socket, char *filename, int nb)
 	t_dirent *Rfille = NULL;
 	int fd;
 
+	ft_putstr_fd(filename, socket);
+	write(socket, "\0", 1);
 	if (rep == NULL && nb)
-	{
-		ft_putstr_fd(filename, socket);
 		if (!(rep = opendir(filename)))
 			error();
-	}
 	else if ((fd = open(filename, O_RDONLY, S_IRUSR)))
 	{
 		if (!fd)
 			error();
-		ft_putstr_fd(filename, socket);
-		write(socket, "\0", 1);
 		ft_sock_in_file(fd, socket);
 	}
 	else
@@ -78,13 +75,13 @@ void ft_sock_in_file(int socket, int fd)
   char *buffer;
   int size;
 
-  buffer = ft_fd_in_str(socket);//, &buffer);
+  buffer = ft_fd_in_str(socket);
   size = ft_strlen(buffer);
   write(fd, buffer, size);
   free(buffer);
 }
 
-char *ft_fd_in_str(int fd)//, char **buffer)
+char *ft_fd_in_str(int fd)
 {
 	char *tmp;
 	int sizestr;
