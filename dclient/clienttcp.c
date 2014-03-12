@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:03:39 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/12 14:12:49 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/12 14:37:43 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void ft_commutateur(int sock, char **argv)
 			write(sock, nb_file, ft_strlen(nb_file));
 			write(sock, "\0", 1);
 			write(sock, filename, ft_strlen(filename) + 1);
+			write(sock, "\0", 1);
 			ft_send_file(sock, filename, nb);
 		}
 	}
