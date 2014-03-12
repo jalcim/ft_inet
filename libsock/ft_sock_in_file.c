@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 04:45:51 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/12 16:17:43 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/12 19:29:26 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,30 @@ void ft_send_file(int socket, char *filename, int nb)
 	ft_putstr_fd(filename, socket);
 	write(socket, "\0", 1);
 	if (rep == NULL && nb)
+	{
 		if (!(rep = opendir(filename)))
 			error();
+//		ft_strcpy(filename+2, filename);
+//		filename[0] = '.';
+//		filename[1] = '/';
+		chdir(filename);
+	}
 	else if ((fd = open(filename, O_RDONLY, S_IRUSR)))
 	{
+		ft_putstr("filename sended = ");
+		ft_putendl(filename);
 		if (!fd)
 			error();
 		ft_sock_in_file(fd, socket);
 	}
 	else
 		error();
-	if (nb && (Rfille = readdir(rep)))
+	if (nb)
 	{
+		while ((Rfille = readdir(rep)) && Rfille->d_name[0] == '.')
+			if (Rfille == NULL)
+				error();
+		ft_putstr("filename repere = ");
 		ft_putendl(Rfille->d_name);
 		if (nb--)
 			ft_send_file(socket, Rfille->d_name, nb);
@@ -77,8 +89,9 @@ void ft_sock_in_file(int socket, int fd)
   int size;
 
   buffer = ft_fd_in_str(socket);
-  ft_putstr("sock_in_file = ");
-  ft_putendl(buffer);
+//  ft_putstr("sock_in_file = ");
+//  ft_putstr(buffer);
+//  write(1, "\n", 1);
   size = ft_strlen(buffer) + 1;
   write(fd, buffer, size);
   free(buffer);
@@ -113,11 +126,14 @@ char *ft_recv_filename(int sock)
 {
     char *filename;
     int compt;
+	char buf;
 
     filename = ft_strnew(256);
     compt = -1;
-    while (read(sock, &filename[++compt], 1) && filename[compt] != '\0' && compt < 255)
-        ;
+	while (read(sock, &buf, 1))
+		  write(1, &buf, 1);
+/*    while (read(sock, &filename[++compt], 1) && filename[compt] != '\0' && compt < 255)
+*/       ;
     if (filename[compt] != '\0')
     {
         printf("invalide filename :%s:\n", filename);
