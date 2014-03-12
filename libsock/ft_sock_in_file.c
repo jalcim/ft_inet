@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 04:45:51 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/12 14:14:43 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/12 14:33:47 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void ft_send_file(int socket, char *filename, int nb)
 	{
 		if (!fd)
 			error();
+		ft_putstr_fd(filename, socket);
 		ft_sock_in_file(fd, socket);
 	}
 	else
@@ -42,7 +43,6 @@ void ft_send_file(int socket, char *filename, int nb)
 
 int ft_recv_file(int socket, int nb)
 {
-//	static char download[500] = "./download/";
 	static int first = 1;
 	int fd;
 	char *filename;
@@ -53,14 +53,12 @@ int ft_recv_file(int socket, int nb)
 	{
 		ft_putstr("dir = ");
 		ft_putendl(filename);
-//		ft_strcat(download, filename);
 		mkdir(filename, 0777);
-//		ft_strcat(download, "/");
-//		save = ft_strlen(download) + 1;
+		chdir(filename);
 	}
-//	ft_strcat(download + save, filename);
-	if ((!first || !nb) && (fd = open(filename, O_CREAT | O_WRONLY, S_IWUSR)))
+	else if ((!first || !nb) && (fd = open(filename, O_CREAT | O_WRONLY, S_IWUSR)))
 	{
+		ft_putstr("filename f = ");
 		ft_putendl(filename);
 		if (!fd)
 			error();
@@ -70,6 +68,7 @@ int ft_recv_file(int socket, int nb)
 	if (nb--)
 		first = ft_recv_file(socket, nb);
 
+	chdir("..");
 	return (1);
 }
 
@@ -80,7 +79,7 @@ void ft_sock_in_file(int socket, int fd)
 
   buffer = ft_fd_in_str(socket);//, &buffer);
   size = ft_strlen(buffer);
-  write(fd, buffer, size);
+  write(1/*fd*/, buffer, size);
   free(buffer);
 }
 
@@ -96,7 +95,6 @@ char *ft_fd_in_str(int fd)//, char **buffer)
 	buffer = ft_strnew(sizestr);
 	while ((oct = read(fd, tmp, 60)) > 0)
 	{
-		ft_putstr(tmp);
 		tmp[oct] = '\0';
 		if (!(buffer = (char *)realloc(buffer, sizestr + oct)))
 			error();
