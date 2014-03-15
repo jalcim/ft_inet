@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/28 01:07:00 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/12 13:47:21 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/13 13:34:43 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,11 @@ void sig_serv(int sig)
 {
 	int *fifo;
 	char *buffer;
-
 	int pid;
 
-/*	if ((pid = fork()))
-		return ;
-*/
+//	if ((pid = fork()))
+//		return ;
+
 	fifo = recup_pipe(NULL);
 	close(fifo[1]);
 	buffer = ft_fd_in_str(fifo[0]);//lecture_pipe dans buffer;
@@ -94,10 +93,7 @@ int *recup_pipe(int *fifo)
 	if (fifo)
 		fifo_save = fifo;
 	else
-	{
-		if (fifo_save == NULL)
-			return (NULL);
 		return (fifo_save);
-	}
 	return (NULL);
 }
+

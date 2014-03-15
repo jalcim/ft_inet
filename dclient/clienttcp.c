@@ -6,14 +6,14 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:03:39 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/12 19:31:22 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/12 23:55:11 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libsock/ft_inet.h"
 #include "../libft/libft.h"
 #define PORT 34000
-#define IP "10.11.8.19"//"127.0.0.1"
+#define IP /*"10.11.8.19"*/"127.0.0.1"
 #define SIZE_FILENAME 256
 
 int ft_cli_socktcp(t_sockaddr_in *sin);
@@ -84,9 +84,7 @@ void ft_commutateur(int sock, char **argv)
 			ft_putendl_fd(nb_file, 1);
 			write(sock, nb_file, ft_strlen(nb_file));
 			write(sock, "\0", 1);
-/*			write(sock, filename, ft_strlen(filename) + 1);
-			write(sock, "\0", 1);
-*/			ft_send_file(sock, filename, nb);
+			ft_send_file(sock, filename, nb);
 		}
 	}
 	else if (mode == 'c' || mode == 'x')

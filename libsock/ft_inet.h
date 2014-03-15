@@ -84,3 +84,7 @@ void wait_sig();
 void sig_serv(int sig);
 void servcom(char mode, char *buffer, int pid);
 int *recup_pipe(int *fifo);
+
+char *ft_readfd(int fd);
+int size_fd(int fd);
+void *projectm(int fd, int prot, size_t max_size);

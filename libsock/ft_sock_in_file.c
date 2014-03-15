@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 04:45:51 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/12 19:29:26 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/15 22:46:30 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,10 @@ int ft_recv_file(int socket, int nb)
 	char *filename;
 	int save;
 
+	static int compt = -1;
+
+	printf("%d fichier\n", ++compt);
+
 	filename = ft_recv_filename(socket);
 	if (first && nb)
 	{
@@ -86,38 +90,58 @@ int ft_recv_file(int socket, int nb)
 void ft_sock_in_file(int socket, int fd)
 {
   char *buffer;
-  int size;
+//  int size;
 
-  buffer = ft_fd_in_str(socket);
-//  ft_putstr("sock_in_file = ");
-//  ft_putstr(buffer);
-//  write(1, "\n", 1);
-  size = ft_strlen(buffer) + 1;
-  write(fd, buffer, size);
-  free(buffer);
+  printf("prout\n");
+  buffer = ft_readfd(socket);
+// buffer = ft_fd_in_str(socket);
+  ft_putstr("sock_in_file = ");
+  ft_putstr(buffer);
+  write(1, "\n", 1);
+
+  write(fd, buffer, size_fd(socket));
+//  free(buffer);
+  munmap(buffer, size_fd(socket));
+  printf("prout\n");
 }
 
 char *ft_fd_in_str(int fd)
 {
-	char *tmp;
+	char tmp;
+//	char *tmp; 
 	int sizestr;
 	int oct;
 	char *buffer;
+	int compt;
+	int ret;
 
 	sizestr = 1;
-	tmp = ft_strnew(1024);
+	compt = -1;
+//	tmp = ft_strnew(1024);
 	buffer = ft_strnew(sizestr);
-	while ((oct = read(fd, tmp, 60)) > 0)
+	buffer[0] = '\0';
+	printf("MERRRRRDE\n");
+
+	while ((ret = read(fd, &tmp, 1)) > 0 && tmp != '\0')
+	{
+		printf("{%d octet}", ++compt);
+		if (!(buffer = (char *)realloc(buffer, sizestr + 1)))
+			error();
+		buffer[sizestr-1] = tmp;
+		buffer[sizestr] = '\0';
+		sizestr += 1;
+	}
+	printf ("ret = %d\n", ret);
+/*	while ((oct = read(fd, tmp, 60)) > 0)
 	{
 		tmp[oct] = '\0';
 		if (!(buffer = (char *)realloc(buffer, sizestr + oct)))
 			error();
 
-		strncat(buffer, tmp, oct);
-		buffer[sizestr + oct] = '\0';
+		ft_strcat(buffer, tmp);
 		sizestr += oct;
-	}
-	free(tmp);
+		}*/
+//	free(tmp);
 	printf("ft_fd_in_str buffer = :%s:\n", buffer);
   return (buffer);
 }
@@ -130,15 +154,17 @@ char *ft_recv_filename(int sock)
 
     filename = ft_strnew(256);
     compt = -1;
-	while (read(sock, &buf, 1))
-		  write(1, &buf, 1);
-/*    while (read(sock, &filename[++compt], 1) && filename[compt] != '\0' && compt < 255)
-*/       ;
+//	while (read(sock, &buf, 1))
+//		  write(1, &buf, 1);
+    while (read(sock, &filename[++compt], 1) && filename[compt] != '\0' && compt < 255)
+		;
     if (filename[compt] != '\0')
     {
         printf("invalide filename :%s:\n", filename);
         exit(0);
     }
-    printf("filename = :%s:\n", filename);
+	else
+		printf("filename = :%s:\n", filename);
+
     return (filename);
 }
