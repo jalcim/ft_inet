@@ -58,24 +58,29 @@ int ft_inet_aton(const char *cp, struct in_addr *addr);
 unsigned short ft_htons(unsigned short value);
 unsigned int ft_htonl(unsigned int value);
 
-char *ft_fd_in_str(int fd);//, char **buffer);
-void ft_sock_in_file(int socket, int fd);
 int ft_recv_file(int socket, int nb);
 void ft_send_file(int socket, char *filename, int nb);
 void ft_send_dir(int socket, char *name_dir);
+void ft_sendfile(int fd, int sock);
+void ft_recvfile(int sock, int fd);
+int redirfd(int fd1, int fd2);
+char *ft_readfd(int fd, int nb_oct);
+char *ft_writefd(int fd, int nb_oct);
+char *ft_fd_in_str(int fd);
+void *projectm(int fd, int prot, int nb_oct);
+int size_fd(int fd);
 
 void ft_socktcp(int *sock, int port, t_sockaddr_in *serveur);
 void ft_waitsocktcp(int sock, t_pollfd *event, int size_fille, int time);
+void wait_connect(t_server *server);
+void new_connect(t_server *server);
+void ft_accept(t_server *server);
 
 t_server *ft_serv_init();
 void acceuil(t_server *server, int pid);
 char cmd_sock(int sock);
 int nb_dir_sock(int sock);
-//int ft_recept_size(int sock);
 char *ft_recv_filename(int sock);
-void new_connect(t_server *server);
-void wait_connect(t_server *server);
-void ft_accept(t_server *server);
 void ft_serv_end();
 
 void servershell(int pid);
@@ -84,7 +89,3 @@ void wait_sig();
 void sig_serv(int sig);
 void servcom(char mode, char *buffer, int pid);
 int *recup_pipe(int *fifo);
-
-char *ft_readfd(int fd);
-int size_fd(int fd);
-void *projectm(int fd, int prot, size_t max_size);

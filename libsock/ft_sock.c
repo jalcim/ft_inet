@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 08:50:10 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/12 00:53:22 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/16 20:04:55 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,16 @@ t_server *ft_serv_init()
 	server->list = NULL;
     server->connection = 0;
 	return (server);
+}
+
+void waitsock(int fd)
+{
+	t_pollfd event;
+
+	printf("wait\n");
+    event.fd = fd;
+    event.events = POLLIN;
+	printf("poll\n");
+    if ((poll(&event, sizeof(t_pollfd), -1)) == -1)
+        error("poll -> ");
 }

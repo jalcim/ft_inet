@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:03:39 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/12 23:55:11 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/16 18:55:04 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@
 int ft_cli_socktcp(t_sockaddr_in *sin);
 void ft_commutateur(int sock, char **argv);
 
+/*protocol :modif: eradication du protocol*/
 //protocol :c/x: envoi du mode, envoi du buffer
 //protocol :f: envoi du mode, envoi du nom de fichier, envoi du buffer
 //protocol :d: envoi du mode, envoi du nombre de fichier, (re:)envoi du nom de fichier, envoi du buffer(goto re;)
 //protocol :modif: envoi du nom d'utilisateur avant le mode
-//protocol :modif: envoi de la taille de chaque string apres le mode sur 1 unsigned int (si la taille est au max de l'uint la fonction d'envoi/reception devien recursif)
 
 int main(int argc, char **argv)
 {
@@ -35,6 +35,11 @@ int main(int argc, char **argv)
 	char mode;
 	char filename[SIZE_FILENAME] = {0};
 
+	if (argc != 3)
+	{
+		ft_putendl("error -> bad argument");
+		exit(0);
+	}
 	sock = ft_cli_socktcp(&sin);
 
 	printf("port = %d\n", (int)sin.sin_port);

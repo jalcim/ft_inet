@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:32:17 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/15 22:40:12 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/16 17:26:06 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void servershell(int pid)
 	ft_socktcp(&server->sock, PORT, server->server);
 	new_connect(server);
 
-	server->pid = 1;
+//	server->pid = 1;
 //	while (server->pid)
 //	{
 		acceuil(server, pid);

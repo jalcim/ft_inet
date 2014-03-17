@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/28 01:07:00 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/13 13:34:43 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/16 16:17:16 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void shell_server()
 	int pid;
 	int fifo[2];
 
-/*	if (pid = fork())
+	if (pid = fork())
 		return ;//pere retourne au shell
-*/
+
 	pipe(fifo);
 	recup_pipe(fifo);
 
@@ -49,15 +49,14 @@ void sig_serv(int sig)
 	char *buffer;
 	int pid;
 
-//	if ((pid = fork()))
-//		return ;
+	if ((pid = fork()))
+		return ;
 
 	fifo = recup_pipe(NULL);
 	close(fifo[1]);
-	buffer = ft_fd_in_str(fifo[0]);//lecture_pipe dans buffer;
-	write(1, buffer, ft_strlen(buffer));
-	write(1, "\n", 1);
-//	printf("buffer sig_serv = :%s:\n", buffer);
+//	buffer = ft_fd_in_str(fifo[0]);//lecture_pipe dans buffer;
+	buffer = ft_readfd(fifo[0], size_fd(fifo[0]));
+	printf("buffer sig_serv = :%s:\n", buffer);
 	if (sig == SIGUSR1)//si c'est un chat
 		ft_putstr("fonction_chat_minishell(buffer);\n");//fonction_chat_minishell(buffer);
 	else if (sig == SIGUSR2)//si c'est une commande
