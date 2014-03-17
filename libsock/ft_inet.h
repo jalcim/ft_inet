@@ -89,3 +89,4 @@ void wait_sig();
 void sig_serv(int sig);
 void servcom(char mode, char *buffer, int pid);
 int *recup_pipe(int *fifo);
+void error(char *strerr);

@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:03:39 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/17 22:06:55 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/17 22:44:58 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int main(int argc, char **argv)
 {
 	int sock;
 	t_sockaddr_in sin = {0};
-	int err = 0;
 
 //char *user
 	char mode;
@@ -44,12 +43,12 @@ int main(int argc, char **argv)
 
 	printf("port = %d\n", (int)sin.sin_port);
 	errno = 0;
-	if ((err = connect(sock, (t_sockaddr*)&sin, sizeof(t_sockaddr))))
+	if ((connect(sock, (t_sockaddr*)&sin, sizeof(t_sockaddr))))
 	{
 		if (errno == EACCES)
 			printf("acces refuser");
 		close(sock);
-		error();
+		error("connect -> ");
 	}
 	printf("connected\n");
 //user = getenv(USER=);
@@ -103,7 +102,7 @@ int ft_cli_socktcp(t_sockaddr_in *sin)
 	int sock;
 
 	if ((sock = socket(PF_INET, SOCK_STREAM, 0)) == -1)
-		error();
+		error("socket -> ");
 	printf(inet_addr(IP) == ft_inet_addr(IP) ? "" : "inet_addr %d : ft %d\n", (int)inet_addr(IP), (int)ft_inet_addr(IP));
 	sin->sin_addr.s_addr = ft_inet_addr(IP);
 	sin->sin_family = PF_INET;
@@ -128,9 +127,4 @@ int ft_compt_dir(char *namedir)//a elliminer en upgradant ft_send_dir
 
 	printf("compt_dir = %d\n", compt);
 	return (compt);
-}
-void error()
-{
-	perror("error -> ");
-	exit(errno);
 }

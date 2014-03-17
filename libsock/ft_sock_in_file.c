@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 04:45:51 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/17 21:41:33 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/17 22:42:36 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void ft_send_file(int socket, char *filename, int nb)
 	if (rep == NULL && nb)
 	{
 		if (!(rep = opendir(filename)))
-			error();
+			error("opendir -> ");
 		chdir(filename);
 	}
 	else if ((fd = open(filename, O_RDONLY, S_IRUSR)))
@@ -32,17 +32,17 @@ void ft_send_file(int socket, char *filename, int nb)
 		ft_putstr("filename sended = ");
 		ft_putendl(filename);
 		if (!fd)
-			error();
+			error("open ->");
 		ft_sendfile(fd, socket);//ft_sock_in_file(fd, socket);
 		write(socket, "\0", 1);
 	}
 	else
-		error();
+		error("bad request -> ");
 	if (nb)
 	{
 		while ((Rfille = readdir(rep)) && Rfille->d_name[0] == '.')
 			if (Rfille == NULL)
-				error();
+				error("readdir -> ");
 		ft_putstr("filename repere = ");
 		ft_putendl(Rfille->d_name);
 		if (nb--)
@@ -74,8 +74,10 @@ int ft_recv_file(int socket, int nb)
 		ft_putstr("filename f = ");
 		ft_putendl(filename);
 		if (!fd)
-			error();
+			error("open -> ");
+		ft_putendl("reception\n");
 		ft_recvfile(socket, fd);//ft_sock_in_file(socket, fd);
+		ft_putendl("aaaaaaaaaaz\n");
 	}
 	first = 0;
 	if (nb--)

@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:32:17 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/16 17:26:06 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/17 22:40:06 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,10 +179,4 @@ t_server *recup(t_server *server)
 		save = server;
 	else
 		return (save);
-}
-
-void error(char *strerr)
-{
-  perror(strerr);
-  exit(0);
 }

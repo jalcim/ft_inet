@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/03/15 20:22:37 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/17 22:16:08 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/17 22:40:37 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void *projectm(int fd, int prot, int nb_oct)
 
     addr = mmap(addr, nb_oct, prot, MAP_SHARED, fd, 0);
     if (addr == MAP_FAILED)
-		error();
+		error("mmap -> ");
     msync(addr, nb_oct, 0);
     return (addr);
 }
@@ -82,12 +82,15 @@ void ft_recvfile(int sock, int fd)
     nb_oct = size_fd(sock);
 
 /*  a defaut d'un appel system portable du style mremap */
+	ft_putendl("resize");
     formate = (char *)malloc(nb_oct);
     ft_memset(formate, '\0', nb_oct);
     write(fd, formate, nb_oct);
     free(formate);
 
+	ft_putendl("print fd");
     str = ft_writefd(fd, nb_oct);
+	ft_putendl("ft_write");
     read(sock, str, nb_oct);
 //
     write(1, str, nb_oct);
@@ -130,4 +133,10 @@ char *ft_fd_in_str(int fd)
 	buffer = (char *)malloc(size);
 	read(fd, buffer, size);
 	return (buffer);
+}
+
+void error(char *strerr)
+{
+	perror(strerr);
+	exit(0);
 }
