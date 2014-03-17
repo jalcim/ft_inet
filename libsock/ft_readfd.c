@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/03/15 20:22:37 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/16 16:23:12 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/17 22:16:08 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,10 @@ void ft_sendfile(int fd, int sock)
     nb_oct = size_fd(fd);
     str = ft_readfd(fd, nb_oct);
     write(sock, str, nb_oct);
-
+//
+    write(1, str, nb_oct);
+	write(1, "\n", 1);
+//	
     munmap(str, nb_oct);
 }
 
@@ -86,6 +89,10 @@ void ft_recvfile(int sock, int fd)
 
     str = ft_writefd(fd, nb_oct);
     read(sock, str, nb_oct);
+//
+    write(1, str, nb_oct);
+	write(1, "\n", 1);
+//
 
     munmap(str, nb_oct);
 }
