@@ -6,14 +6,14 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:03:39 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/17 22:44:58 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/19 21:09:30 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libsock/ft_inet.h"
 #include "../libft/libft.h"
 #define PORT 34000
-#define IP /*"10.11.8.19"*/"127.0.0.1"
+#define IP "127.0.0.1"
 #define SIZE_FILENAME 256
 
 int ft_cli_socktcp(t_sockaddr_in *sin);
@@ -72,13 +72,12 @@ void ft_commutateur(int sock, char **argv)
 
 	mode = argv[1][0];//d f c
 	write(sock, &mode, 1);
-	write(sock, "\0", 1);
 	if (mode == 'f' || mode == 'd')
 	{
 		ft_strncpy(filename, argv[2], 255);
 		if (mode == 'f')
 		{
-			write(sock, filename, ft_strlen(filename) + 1);
+//			write(sock, filename, ft_strlen(filename) + 1);
 			ft_send_file(sock, filename, 0);
 		}
 		else
@@ -92,7 +91,10 @@ void ft_commutateur(int sock, char **argv)
 		}
 	}
 	else if (mode == 'c' || mode == 'x')
+	{
 		ft_putstr_fd(argv[2], sock);
+		write(sock, "\0", 1);
+	}
 	else
 		printf("no mode %c bad argument\n", mode);
 }

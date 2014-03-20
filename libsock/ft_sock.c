@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 08:50:10 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/17 22:03:13 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/19 18:55:29 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,21 @@ t_server *ft_serv_init()
 	return (server);
 }
 
-void waitsock(int fd)
+void ft_waitsock(int fd)
 {
 	t_pollfd event;
+	char buf;
 
-	printf("wait\n");
+	while (size_fd(fd))
+	{
+		read(fd, &buf, 1);
+		write(1, &buf, 1);
+	}
+	ft_putendl("wait write");
     event.fd = fd;
     event.events = POLLIN;
-	printf("poll\n");
+	ft_putendl("poll");
     if ((poll(&event, sizeof(t_pollfd), 1)) == -1)
         error("poll -> ");
+	ft_putendl("next step");
 }

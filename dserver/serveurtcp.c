@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:32:17 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/17 22:40:06 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/19 18:59:34 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,8 @@ void servershell(int pid)
 
 //	server->pid = 1;
 //	while (server->pid)
-//	{
 		acceuil(server, pid);
-		waitpid(server->pid, NULL, 0);
-//	}
+//	waitpid(server->pid, NULL, 0);
 }
 
 void acceuil(t_server *server, int pid)
@@ -72,7 +70,7 @@ void acceuil(t_server *server, int pid)
 /*	if (!(server->pid = fork()))
 	{*/
 		printf("fils\n");
-//		if (!(user = getenv("USER=")))//pour les infos client
+//		if (!(user = getenv("USER=")))//pour les infos client (dans le client(ca na rien a foutre la !!!))
 //			error();
 		cmd = cmd_sock(server->sock);
 		printf("cmd = :%c:\n", cmd);
@@ -83,7 +81,7 @@ void acceuil(t_server *server, int pid)
 				nb_dir = nb_dir_sock(server->sock);
 			ft_recv_file(server->sock, nb_dir);
 		}
-		else if (cmd == 'c' || cmd == 'x')// c == chat ou commande a distance
+		else if (cmd == 'c' || cmd == 'x')
 		{
 			buffer = ft_fd_in_str(server->sock);//reception de la string sur la socket
 			printf("serv buffer = :%s:\n", buffer);
@@ -92,6 +90,7 @@ void acceuil(t_server *server, int pid)
 		else
 			printf("no mode %c bad argument\n", cmd);
 		ft_putstr("server : mort du processus fils\n");
+
 		close(server->sock);
 		exit(0);
 /*	}*/

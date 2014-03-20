@@ -69,6 +69,7 @@ char *ft_writefd(int fd, int nb_oct);
 char *ft_fd_in_str(int fd);
 void *projectm(int fd, int prot, int nb_oct);
 int size_fd(int fd);
+void ft_waitsock(int fd);
 
 void ft_socktcp(int *sock, int port, t_sockaddr_in *serveur);
 void ft_waitsocktcp(int sock, t_pollfd *event, int size_fille, int time);

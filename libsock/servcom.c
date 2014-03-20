@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/28 01:07:00 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/16 16:17:16 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/19 19:00:22 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,16 @@ void sig_serv(int sig)
 
 	fifo = recup_pipe(NULL);
 	close(fifo[1]);
-//	buffer = ft_fd_in_str(fifo[0]);//lecture_pipe dans buffer;
-	buffer = ft_readfd(fifo[0], size_fd(fifo[0]));
+	buffer = ft_fd_in_str(fifo[0]);//lecture_pipe dans buffer;
+//	buffer = ft_readfd(fifo[0], size_fd(fifo[0]));
 	printf("buffer sig_serv = :%s:\n", buffer);
 	if (sig == SIGUSR1)//si c'est un chat
 		ft_putstr("fonction_chat_minishell(buffer);\n");//fonction_chat_minishell(buffer);
 	else if (sig == SIGUSR2)//si c'est une commande
 		ft_putstr("fonction_de_traitement(buffer);\n");//fonction_de_traitement(buffer);
-	free(buffer);
-	write(1, "fin de transmition\n", 19);
-	exit(0);
+	free(buffer);//
+	write(1, "fin de transmition\n", 19);//
+	exit(0);//
 }
 
 //partie server
@@ -83,6 +83,7 @@ void servcom(char mode, char *buffer, int pid)
 		exit(0);
 	}
 	ft_putstr_fd((buffer), fifo[1]);//transmition
+	write(fifo[1], "\0", 1);
 }
 
 int *recup_pipe(int *fifo)
