@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/28 01:07:00 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/22 13:24:14 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/22 15:52:17 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,10 @@ void sig_serv(int sig)
 	else if (sig == SIGUSR2)//si c'est une commande
 		ft_putstr("fonction_de_traitement(user, buffer);\n");//fonction_de_traitement(user, buffer);
 
-	free(buffer);//
-	write(1, "fin de transmition\n", 19);//
-	exit(0);//
+	free(buffer);
+	free(user);
+	write(1, "fin de transmition\n", 19);
+	exit(0);
 }
 
 //partie server
