@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:03:39 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/19 21:09:30 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/22 13:17:08 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,42 +19,42 @@
 int ft_cli_socktcp(t_sockaddr_in *sin);
 void ft_commutateur(int sock, char **argv);
 
-/*protocol :modif: eradication du protocol*/
+/*protocol :finaliter: eradication du protocol*/
+//protocol :modif: envoi du nom d'utilisateur avant le mode
 //protocol :c/x: envoi du mode, envoi du buffer
 //protocol :f: envoi du mode, envoi du nom de fichier, envoi du buffer
 //protocol :d: envoi du mode, envoi du nombre de fichier, (re:)envoi du nom de fichier, envoi du buffer(goto re;)
-//protocol :modif: envoi du nom d'utilisateur avant le mode
 
 int main(int argc, char **argv)
 {
 	int sock;
-	t_sockaddr_in sin = {0};
-
-//char *user
-	char mode;
-	char filename[SIZE_FILENAME] = {0};
+	t_sockaddr_in *sin;
+	char *user;//[user]
 
 	if (argc != 3)
 	{
 		ft_putendl("error -> bad argument");
 		exit(0);
 	}
-	sock = ft_cli_socktcp(&sin);
+	sin = (t_sockaddr_in *)malloc(sizeof(t_sockaddr_in));
+	ft_bzero(sin, sizeof(t_sockaddr_in));
+	sock = ft_cli_socktcp(sin);
 
-	printf("port = %d\n", (int)sin.sin_port);
+	printf("port = %d\n", (int)sin->sin_port);
 	errno = 0;
-	if ((connect(sock, (t_sockaddr*)&sin, sizeof(t_sockaddr))))
+	if ((connect(sock, (t_sockaddr*)sin, sizeof(t_sockaddr))))
 	{
 		if (errno == EACCES)
-			printf("acces refuser");
+			ft_putendl("acces refuser");
 		close(sock);
 		error("connect -> ");
 	}
-	printf("connected\n");
-//user = getenv(USER=);
-//ft_putstr_fd(user, sock);
+	ft_putendl("connected");
+	user = getenv("USER=");//[user]
+	ft_putstr_fd(user, sock);//[user]
+	write(sock, "\0", 1);
 	ft_commutateur(sock, argv);
-	printf("send\n");
+	ft_putendl("send");
 
 	sleep(2);
 	close(sock);
@@ -63,32 +63,18 @@ int main(int argc, char **argv)
 
 void ft_commutateur(int sock, char **argv)
 {
-	char csize[4];
-	int size;
 	char mode;
 	char filename[SIZE_FILENAME] = {0};
-	char *nb_file;
-	int nb;
 
-	mode = argv[1][0];//d f c
+	mode = argv[1][0];
 	write(sock, &mode, 1);
 	if (mode == 'f' || mode == 'd')
 	{
 		ft_strncpy(filename, argv[2], 255);
 		if (mode == 'f')
-		{
-//			write(sock, filename, ft_strlen(filename) + 1);
 			ft_send_file(sock, filename, 0);
-		}
 		else
-		{
-			nb = ft_compt_dir(filename);
-			nb_file = ft_itoa(nb);//a elliminer avec ft_send_dir
-			ft_putendl_fd(nb_file, 1);
-			write(sock, nb_file, ft_strlen(nb_file));
-			write(sock, "\0", 1);
-			ft_send_file(sock, filename, nb);
-		}
+			ft_send_dir(sock, filename);
 	}
 	else if (mode == 'c' || mode == 'x')
 	{
@@ -105,28 +91,10 @@ int ft_cli_socktcp(t_sockaddr_in *sin)
 
 	if ((sock = socket(PF_INET, SOCK_STREAM, 0)) == -1)
 		error("socket -> ");
-	printf(inet_addr(IP) == ft_inet_addr(IP) ? "" : "inet_addr %d : ft %d\n", (int)inet_addr(IP), (int)ft_inet_addr(IP));
 	sin->sin_addr.s_addr = ft_inet_addr(IP);
 	sin->sin_family = PF_INET;
-	printf(htons(PORT) == ft_htons(PORT) ? "" : "htonl = %u : ft = %u\n", htons(PORT), ft_htons(PORT));
 	sin->sin_port = ft_htons(PORT);
 
-	printf("connect\n");
+	ft_putendl("connect");
 	return (sock);
-}
-
-int ft_compt_dir(char *namedir)//a elliminer en upgradant ft_send_dir
-{
-	DIR *rep;
-	t_dirent *Rfille;
-	int compt;
-
-	compt = 0;
-	rep = opendir(namedir);
-	while (Rfille = readdir(rep))
-		if (Rfille->d_name[0] != '.')
-			compt++;
-
-	printf("compt_dir = %d\n", compt);
-	return (compt);
 }

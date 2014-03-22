@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:32:17 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/19 18:59:34 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/22 12:43:11 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void servershell(int pid)
 	t_server *server;
 
 	signal(SIGINT, ft_serv_end);
-	
+
 	write(1, "server\n", 7);
 	server = ft_serv_init();
 	recup(server);
@@ -53,12 +53,10 @@ void servershell(int pid)
 }
 
 void acceuil(t_server *server, int pid)
-{//devie suivant la commande 
+{
 	char cmd;
-//	char *user
-	char *filename;
+	char *user;//[user]
 	char *buffer;
-	int size;
 	int nb_dir;
 
 	printf("acceuil\n");
@@ -66,7 +64,8 @@ void acceuil(t_server *server, int pid)
 	server->connection++;
 	printf("connected\n");
 
-//	new_struct_client(server);
+	user = ft_fd_in_str(server->sock);//[user]
+	ft_putendl(user);//[user]
 /*	if (!(server->pid = fork()))
 	{*/
 		printf("fils\n");
@@ -85,7 +84,7 @@ void acceuil(t_server *server, int pid)
 		{
 			buffer = ft_fd_in_str(server->sock);//reception de la string sur la socket
 			printf("serv buffer = :%s:\n", buffer);
-			servcom(cmd, buffer, pid);//envoie du buffer au shell via pipe
+			servcom(cmd, user, buffer, pid);//envoie du buffer au shell via pipe [user]
 		}
 		else
 			printf("no mode %c bad argument\n", cmd);
@@ -141,7 +140,7 @@ void wait_connect(t_server *server)//int *sock, t_pollfd *event, int size_file)
 
 void ft_accept(t_server *server)
 {
-	int size;
+	socklen_t size;
 
 	size = sizeof(t_sockaddr);
 	server->client->info = (t_sockaddr_in *)malloc(size);
@@ -172,10 +171,11 @@ void ft_serv_end()
 
 t_server *recup(t_server *server)
 {
-	static t_server *save;
+	static t_server *save = NULL;
 
 	if (server)
 		save = server;
 	else
 		return (save);
+	return (NULL);
 }

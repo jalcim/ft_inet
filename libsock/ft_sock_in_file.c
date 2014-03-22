@@ -6,16 +6,29 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 04:45:51 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/20 07:19:07 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/22 12:47:09 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
 #include "ft_inet.h"
 
+void ft_send_dir(int socket, char *name_dir)
+{
+    int nb;
+    char *nb_file;
+
+    nb = ft_compt_dir(name_dir);
+    nb_file = ft_itoa(nb);
+    write(socket, nb_file, ft_strlen(nb_file));
+    write(socket, "\0", 1);
+    chdir(name_dir);
+    ft_send_file(socket, name_dir, nb);
+}
+
 void ft_send_file(int socket, char *filename, int nb)
 {
-	static DIR *rep = NULL;
+	DIR *rep = NULL;
 	t_dirent *Rfille = NULL;
 	int fd;
 	char ok;
@@ -23,11 +36,19 @@ void ft_send_file(int socket, char *filename, int nb)
 	printf("%d nb\n", nb);
 	ft_putstr_fd(filename, socket);
 	write(socket, "\0", 1);
-	if (rep == NULL && nb)
+
+//	if (rep == NULL && nb)
+	//{
+	//if (!(rep = opendir(filename)))
+	//	error("opendir -> ");
+	//chdir(filename);
+	//}
+	if (ft_is_dir(filename))
 	{
 		if (!(rep = opendir(filename)))
 			error("opendir -> ");
-		chdir(filename);
+		write(socket, "1", 1);//[dir]
+		ft_send_dir(socket, filename);
 	}
 	else if ((fd = open(filename, O_RDONLY, S_IRUSR)))
 	{
@@ -37,6 +58,7 @@ void ft_send_file(int socket, char *filename, int nb)
 //
 		if (!fd)
 			error("open ->");
+		write(socket, "0", 1);//[file]
 		ft_sendfile(fd, socket);//ft_sock_in_file(fd, socket);
 //		write(socket, "\0", 1);
 		read(socket, &ok, 1);//attente de confirmation
@@ -60,22 +82,20 @@ void ft_send_file(int socket, char *filename, int nb)
 		}
 		else
 			ft_putendl("faux");
+		chdir("..");
 	}
 }
 
 int ft_recv_file(int socket, int nb)
 {
-	static int first = 1;
+	static char first = 1;
 	int fd;
 	char *filename;
-	int save;
-
-	static int compt = -1;
-
-	printf("%d nb ; %d fichier\n", nb, ++compt);
 
 	sleep(1);
 	filename = ft_recv_filename(socket);
+	read(socket, &first, 1);//[mode]
+	first -= '0';//[dossier ou fichier ?]
 	printf("first == %d\n", first);
 	if (first && nb)
 	{
@@ -110,7 +130,7 @@ int ft_recv_file(int socket, int nb)
 	return (1);
 }
 
-void ft_fusion(char *buffer, char *tmp);
+static void ft_fusion(char *buffer, char *tmp);
 char *ft_fd_in_str(int fd)
 {
     char *tmp;
@@ -139,7 +159,7 @@ char *ft_fd_in_str(int fd)
     return (buffer);
 }
 
-void ft_fusion(char *buffer, char *tmp)
+static void ft_fusion(char *buffer, char *tmp)
 {
     if (!(buffer = (char *)realloc(buffer, (ft_strlen(buffer) + ft_strlen(tmp)) + 1)))
         error("realloc ->");
@@ -150,7 +170,6 @@ char *ft_recv_filename(int sock)
 {
     char *filename;
     int compt;
-	char buf;
 
     filename = ft_strnew(256);
     compt = -1;
@@ -165,4 +184,27 @@ char *ft_recv_filename(int sock)
 		printf("filename = :%s:\n", filename);
 
     return (filename);
+}
+
+int ft_is_dir(char *name)
+{
+	if (opendir(name))
+		return (1);
+	return (0);
+}
+
+int ft_compt_dir(char *namedir)
+{
+    DIR *rep;
+    t_dirent *Rfille;
+    int compt;
+
+    compt = 0;
+    rep = opendir(namedir);
+    while ((Rfille = readdir(rep)))
+        if (Rfille->d_name[0] != '.')
+            compt++;
+
+    printf("compt_dir = %d\n", compt);
+    return (compt);
 }

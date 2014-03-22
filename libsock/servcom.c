@@ -6,12 +6,13 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/28 01:07:00 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/19 19:00:22 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/22 13:24:14 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_inet.h"
 #include "../libft/libft.h"
+#include <signal.h>
 
 //partie shell
 void shell_server()
@@ -19,7 +20,7 @@ void shell_server()
 	int pid;
 	int fifo[2];
 
-	if (pid = fork())
+	if ((pid = fork()))
 		return ;//pere retourne au shell
 
 	pipe(fifo);
@@ -45,29 +46,31 @@ void wait_sig()
 
 void sig_serv(int sig)
 {
-	int *fifo;
 	char *buffer;
+	char *user;
+	int *fifo;
 	int pid;
 
 	if ((pid = fork()))
 		return ;
-
 	fifo = recup_pipe(NULL);
 	close(fifo[1]);
+	user = ft_fd_in_str(fifo[0]);//[user]
 	buffer = ft_fd_in_str(fifo[0]);//lecture_pipe dans buffer;
-//	buffer = ft_readfd(fifo[0], size_fd(fifo[0]));
-	printf("buffer sig_serv = :%s:\n", buffer);
+	printf("login %s\n", user);//[user]
+	printf("commande sig_serv = :%s:\n", buffer);
 	if (sig == SIGUSR1)//si c'est un chat
-		ft_putstr("fonction_chat_minishell(buffer);\n");//fonction_chat_minishell(buffer);
+		ft_putstr("fonction_chat_minishell(user, buffer);\n");//fonction_chat_minishell(user, buffer);
 	else if (sig == SIGUSR2)//si c'est une commande
-		ft_putstr("fonction_de_traitement(buffer);\n");//fonction_de_traitement(buffer);
+		ft_putstr("fonction_de_traitement(user, buffer);\n");//fonction_de_traitement(user, buffer);
+
 	free(buffer);//
 	write(1, "fin de transmition\n", 19);//
 	exit(0);//
 }
 
 //partie server
-void servcom(char mode, char *buffer, int pid)
+void servcom(char mode, char *user, char *buffer, int pid)//[user]
 {
 	int *fifo;
 
@@ -82,7 +85,9 @@ void servcom(char mode, char *buffer, int pid)
 		printf("argument not valide\n");
 		exit(0);
 	}
-	ft_putstr_fd((buffer), fifo[1]);//transmition
+	ft_putstr_fd(user, fifo[1]);//[user]
+	write(fifo[1], "\0", 1);
+	ft_putstr_fd(buffer, fifo[1]);//transmition
 	write(fifo[1], "\0", 1);
 }
 

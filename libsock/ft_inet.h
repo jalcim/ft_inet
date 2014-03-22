@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include "sys/stat.h"
+#include <sys/stat.h>
 #include <fcntl.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -51,8 +51,6 @@ struct	s_aton
 	int			n;
 };
 
-void error();
-
 unsigned long int ft_inet_addr(const char *ip);
 int ft_inet_aton(const char *cp, struct in_addr *addr);
 unsigned short ft_htons(unsigned short value);
@@ -69,7 +67,8 @@ char *ft_writefd(int fd, int nb_oct);
 char *ft_fd_in_str(int fd);
 void *projectm(int fd, int prot, int nb_oct);
 int size_fd(int fd);
-void ft_waitsock(int fd);
+int ft_is_dir(char *name);
+void ft_waitsock(int fd);//[del]
 
 void ft_socktcp(int *sock, int port, t_sockaddr_in *serveur);
 void ft_waitsocktcp(int sock, t_pollfd *event, int size_fille, int time);
@@ -81,6 +80,7 @@ t_server *ft_serv_init();
 void acceuil(t_server *server, int pid);
 char cmd_sock(int sock);
 int nb_dir_sock(int sock);
+int ft_compt_dir(char *namedir);
 char *ft_recv_filename(int sock);
 void ft_serv_end();
 
@@ -88,6 +88,6 @@ void servershell(int pid);
 void shell_server();
 void wait_sig();
 void sig_serv(int sig);
-void servcom(char mode, char *buffer, int pid);
+void servcom(char mode, char *user, char *buffer, int pid);
 int *recup_pipe(int *fifo);
 void error(char *strerr);

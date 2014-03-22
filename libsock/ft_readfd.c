@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/03/15 20:22:37 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/20 07:55:05 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/21 14:05:12 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,8 @@ void ft_recvfile(int sock, int fd)
     munmap(str, nb_oct);
 }
 
-int redirfd(int fd1, int fd2)
+void ft_redirfd(int fd1, int fd2)
 {
-
     char *str1;
     int nb_oct;
     char *str2;
@@ -114,16 +113,18 @@ int redirfd(int fd1, int fd2)
     nb_oct = size_fd(fd1);
     str1 = ft_readfd(fd1, size_fd(fd1));
 
+/*start code sale a defaut d'un appel system portable du style mremap */
     formate = (char *)malloc(nb_oct);
     ft_memset(formate, '\0', nb_oct);
     write(fd2, formate, nb_oct);
     free(formate);
+/*end code sale*/
 
     str2 = ft_writefd(fd2, size_fd(fd2));
     ft_memcpy(str2, str1, nb_oct);
 
     munmap(str1, nb_oct);
-    munmap(str1, nb_oct);
+    munmap(str2, nb_oct);
 }
 
 void error(char *strerr)
