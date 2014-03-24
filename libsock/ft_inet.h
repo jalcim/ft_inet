@@ -57,7 +57,7 @@ unsigned short ft_htons(unsigned short value);
 unsigned int ft_htonl(unsigned int value);
 
 int ft_recv_file(int socket, int nb);
-void ft_send_file(int socket, char *filename, int nb);
+void ft_send_file(int socket, char *filename, int nb, DIR **rep);
 void ft_send_dir(int socket, char *name_dir);
 void ft_sendfile(int fd, int sock);
 void ft_recvfile(int sock, int fd);
@@ -81,6 +81,7 @@ void acceuil(t_server *server, int pid);
 char cmd_sock(int sock);
 int nb_dir_sock(int sock);
 int ft_compt_dir(char *namedir);
+int nb_dir_sock(int sock);
 char *ft_recv_filename(int sock);
 void ft_serv_end();
 

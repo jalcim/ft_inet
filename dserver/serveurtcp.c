@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:32:17 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/22 12:43:11 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/23 00:17:58 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 //protocol :d: envoi du mode, envoi du nombre de fichier, (re:)envoi du nom de fichier, envoi du buffer(goto re;)
 //protocol :modif: envoi du nom d'utilisateur avant le mode
 //protocol :modif: envoi de la taille de chaque string apres le mode sur 1 unsigned int (si la taille est au max de l'uint la fonction d'envoi/reception devien recursif)
-int nb_dir_sock(int sock);
 t_server *recup(t_server *server);
 
 int main()
@@ -93,21 +92,6 @@ void acceuil(t_server *server, int pid)
 		close(server->sock);
 		exit(0);
 /*	}*/
-}
-
-int nb_dir_sock(int sock)
-{
-	char nb_dir[255];
-	int compt;
-
-	compt = -1;
-	while (compt <= 255 && read(sock, &nb_dir[++compt], 1) && nb_dir[compt] != '\0')
-		;
-	ft_putstr("nb_dir = ");
-	ft_putendl(nb_dir);
-	if (nb_dir[compt] != '\0')
-		return (0);
-	return (atoi(nb_dir));
 }
 
 char cmd_sock(int sock)

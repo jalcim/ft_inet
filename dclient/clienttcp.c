@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:03:39 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/22 14:17:51 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/23 22:37:18 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void ft_commutateur(int sock, char **argv)
 	{
 		ft_strncpy(filename, argv[2], 255);
 		if (mode == 'f')
-			ft_send_file(sock, filename, 0);
+			ft_send_file(sock, filename, 0, NULL);
 		else
 			ft_send_dir(sock, filename);
 	}
