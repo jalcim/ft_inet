@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:32:17 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/23 00:17:58 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/25 22:50:21 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <signal.h>
 #include <sys/types.h> 
 #include <sys/wait.h>
-#define PORT 34000
+#define PORT 24000
 #define MAX_CLIENT 50
 #define SIZE_FILENAME 256
 
@@ -139,17 +139,15 @@ void ft_accept(t_server *server)
 
 void ft_serv_end()
 {//detruit la structure server standar
-    int compt;
     t_server *server;
+	int pid;
 
     server = recup(NULL);
     close(server->sock);
-    compt = -1;
-    while (++compt < 2)//server->connection)
-		close(server->client->event[compt].fd);
     free(server->client);
     free(server);
-    server = NULL;
+	pid = ft_pidsave(0);
+	kill(pid, SIGINT);
     exit(0);
 }
 
