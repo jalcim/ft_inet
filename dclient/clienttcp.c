@@ -6,13 +6,13 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:03:39 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/23 22:37:18 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/25 09:07:28 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libsock/ft_inet.h"
 #include "../libft/libft.h"
-#define PORT 34000
+#define PORT 24000
 #define IP /*"10.11.11.23"/*/"127.0.0.1"
 #define SIZE_FILENAME 256
 

@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 04:45:51 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/24 06:08:55 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/25 22:45:20 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void ft_send_dir(int socket, char *name_dir)
 void ft_send_file(int socket, char *filename, int nb, DIR **rep)//[rep]
 {
 	static int first = 1;
-//	static DIR *rep = NULL;
 	t_dirent *Rfille = NULL;
 	int fd;
 	char ok;
@@ -76,24 +75,11 @@ void ft_send_file(int socket, char *filename, int nb, DIR **rep)//[rep]
 		ft_putstr_fd(filename, socket);
 		write(socket, "\0", 1);
 	}
-/*
-	if (rep == NULL && nb)
-	{
-		if (!(rep = opendir(filename)))
-			error("opendir -> ");
-		chdir(filename);
-	}
-*/
 	if (ft_is_dir(filename) && !first)// || (first && nb >= 0))
 	{
 		ft_putendl("send dir");
-		if (!first)
-		{
-			nb--;
-			ft_send_dir(socket, filename);
-		}
-//		else
-		//		first = 0;
+		nb--;
+		ft_send_dir(socket, filename);
 	}
 	else if ((fd = open(filename, O_RDONLY, S_IRUSR)) && ((!first && nb >= 0) || (first && !nb)))
 	{
@@ -129,9 +115,10 @@ void ft_send_file(int socket, char *filename, int nb, DIR **rep)//[rep]
 		while ((Rfille = readdir((*rep))) && Rfille->d_name[0] == '.')
 			if (Rfille == NULL)
 				error("readdir -> ");
-
+		if (Rfille->d_name == (char *)0x15)
+			return ;
 		ft_printf("nb = :%d:\n", nb);
-		ft_printf("sfilename repere = :%s:\n", Rfille->d_name);
+		printf("sfilename repere = :%p:\n", Rfille->d_name);
 		ft_putendl("re");
 		if ((nb - 1))
 /*[]*/		nb--;
@@ -154,13 +141,22 @@ int ft_recv_file(int socket, int nb)
 	write(1, "?????\n", 6);
 	filename = ft_recv_filename(socket);
 	printf("{%s}\n", filename);
-	if (first != -1 || !nb)
+	if (first != -1 || !nb)//pas le premier tour ou pas un dossier(/!\ou plus de fichier)
 		read(socket, &first, 1);//[mode]
 	else
 	{
 		first = 0;
+		ft_putendl("premier dossier");
 		mkdir(filename, 0777);
+
+		char *pwd = ft_strnew(100);
+		getcwd(pwd, 100);
+		ft_printf("____\npwd = :%s:\n----\n", pwd);
 		chdir(filename);
+		getcwd(pwd, 100);
+		ft_printf("____\npwd = :%s:\n----\n", pwd);
+
+		free(pwd);
 		return (ft_recv_file(socket, nb));
 	}
 	write(1, "-->", 3);//
@@ -173,6 +169,8 @@ int ft_recv_file(int socket, int nb)
 		mkdir(filename, 0777);
 		chdir(filename);
 		ft_recv_file(socket, nb_dir_sock(socket));
+		ft_putendl("-----\ndepile\n--------\n");
+		chdir("..");
 	}
 	else if ((!first || !nb) && (fd = open(filename, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR)))
 	{
@@ -193,8 +191,6 @@ int ft_recv_file(int socket, int nb)
 		ft_putendl("vrai");
 		first = ft_recv_file(socket, nb);
 	}
-	ft_putendl("depile");
-	chdir("..");
 	return (1);
 }
 
@@ -273,9 +269,13 @@ int ft_compt_dir(char *namedir)
 	ft_putendl("ft_compt_dir");
 	ft_printf("open %s\n", namedir);
     if (((rep) = opendir(namedir)))
+	{
 		while ((Rfille = readdir(rep)))
 			if (Rfille->d_name[0] != '.')
 				compt++;
+	}
+	else
+		error("opendir -> ");
 	ft_putendl("close");
 	closedir(rep);
     return (compt);

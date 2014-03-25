@@ -91,4 +91,6 @@ void wait_sig();
 void sig_serv(int sig);
 void servcom(char mode, char *user, char *buffer, int pid);
 int *recup_pipe(int *fifo);
+int ft_pidsave(int pid);
+void killslave();
 void error(char *strerr);

@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/03/15 20:22:37 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/21 14:05:12 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/25 09:03:00 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <stdlib.h>
+#include <signal.h>
 
 char *ft_readfd(int fd, int nb_oct)
 {
@@ -130,5 +131,6 @@ void ft_redirfd(int fd1, int fd2)
 void error(char *strerr)
 {
 	perror(strerr);
+	kill(SIGINT, getpid());
 	exit(0);
 }

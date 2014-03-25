@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/12/01 23:37:32 by jalcim            #+#    #+#             */
-/*   Updated: 2014/02/09 20:42:47 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/25 22:03:04 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-char ** ft_strsplit(char const *s, char c);
+char **ft_strsplit(char const *s, char c);
 
 char * ft_strcat (char * dest, const char *src);
 char * ft_strncat (char * dest, const char *src, size_t size);
@@ -37,6 +37,7 @@ char * ft_itoa(int n);
 char * ft_strmap(char const *s, char (*f)(char));
 char * ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char * ft_itoa(int n);
+unsigned int ft_bindec(char *bin);
 char * ft_strrchr (const char *src, int c);
 
 size_t ft_strlcat (char *dest, const char *src, size_t size);
@@ -86,5 +87,6 @@ void ft_putstr(const char *s);
 void ft_putstr_fd(const char *s, int fd);
 void ft_putendl(const char *s);
 void ft_putendl_fd(const char *s, int fd);
+void ft_putbin(unsigned int origin);
 
 #endif
