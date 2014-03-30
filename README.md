@@ -25,6 +25,6 @@ man 7 tcp : http://manpagesfr.free.fr/man/man7/tcp.7.html
 
 man 7 ip : http://manpagesfr.free.fr/man/man7/ip.7.html
 
+projection memoire :
 
-//!\\ attention j'ai laisser un realloc dans la fonction fd_in_str
-//!\\ ne surtout pas l'enlever (mon ft_realloc a un bug)
+man 2 mmap : http://manpagesfr.free.fr/man/man2/mmap.2.html
