@@ -73,7 +73,7 @@ void sig_serv(int sig)
     user = ft_fd_in_str(fifo[0]);
     buffer = ft_fd_in_str(fifo[0]);
     if (sig == SIGUSR1)
-      chat(user, buffer);
+      ft_putstr("chat\n");//      chat(user, buffer);
     else if (sig == SIGUSR2)
       ft_putstr("distcmd\n");
       //      if (ft_distcmd(user, buffer))

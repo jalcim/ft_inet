@@ -41,9 +41,10 @@ void start_chat()
 	  chat = creat_conv(login);
 	  printf("chat creer\n");
 	}
+      printf("start buffer = :%s:\n", buffer);
       maj_conv(chat, buffer);
     }
-  //}/*
+  //}
   //end
   while (chat->prev)
     chat = chat->prev;

@@ -82,7 +82,6 @@ void maj_conv(t_conv *chat, char *buffer)
   printf("maj conv\n");
   if (chat->cpt)
     chat->conv = ft_repointe(chat->conv, chat->cpt);
-  printf("maj conv buffer = :%s:\n", buffer);
   chat->conv[chat->cpt] = buffer;
   chat->cpt++;
   chat->conv[chat->cpt] = NULL;
