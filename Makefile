@@ -10,7 +10,7 @@
 #                                                                              #
 #******************************************************************************#
 
-SRV = prog
+SRV = server
 CLT = client
 
 SSRC =	dserver/serveurtcp.c\
