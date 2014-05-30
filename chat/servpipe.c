@@ -1,5 +1,8 @@
 #include "servpipe.h"
 
+int print_str_struct(t_conv *chat);
+void print_struct(t_conv *chat);
+
 int chat(char *login, char *buffer)
 {
   int *fd;
@@ -44,25 +47,35 @@ void start_chat()
       printf("start buffer = :%s:\n", buffer);
       maj_conv(chat, buffer);
     }
-  //}
-  //end
+  chat = recup_chat(NULL);
+  print_struct(chat);
+}
+
+void print_struct(t_conv *chat)
+{
+  int b = 1;
+
   dup2(2, 1);
   while (chat->prev)
     chat = chat->prev;
-  int i = 0;
-  int b = 1;
   while (b)
     {
-      while (i < chat->cpt)
-	{
-	  printf("%s envoie de :%s:\n\n\n\n", chat->login, chat->conv[i]);
-	  i++;
-	}
-      i = 0;
+      while (print_str_struct(chat))
+	{}
       if (chat->next)
 	chat = chat->next;
       else
 	b = 0;
     }
   printf("exit\n");
-}//*/
+}
+
+int print_str_struct(t_conv *chat)
+{
+  if (chat->cpt_read >= chat->cpt)
+    return (0);
+  printf("login :%s: chat conv[%d] = :%s:\n", 
+	 chat->login, chat->cpt_read, chat->conv[chat->cpt_read]);
+  chat->cpt_read++;
+  return (1);
+}

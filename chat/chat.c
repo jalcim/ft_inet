@@ -57,6 +57,7 @@ t_conv *creat_conv(char *login)
   chat->conv[0] = NULL;
   chat->conv[1] = NULL;
   chat->cpt = 0;
+  chat->cpt_read = 0;
   add_chain(chat);
   printf("conversation ajouter\n");
   return (chat);
