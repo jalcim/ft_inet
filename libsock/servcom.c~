@@ -73,9 +73,8 @@ void sig_serv(int sig)
     if (sig == SIGUSR1)
       chat(user, buffer);
     else if (sig == SIGUSR2)
-      ft_putstr("distcmd\n");
-      //      if (ft_distcmd(user, buffer))
-      //ft_putstr("commande failled\n");
+      if (ft_distcmd(user, buffer))
+	ft_putstr("commande failled\n");
     close(fifo[0]);
     free(buffer);
     free(user);

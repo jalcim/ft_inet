@@ -18,7 +18,7 @@
 
 /*
   protocol :login: envoi du nom d'utilisateur avant le mode
-  protocol :c/x: envoi du mode, envoi du buffer
+  protocol :c/x: envoi du mode, envoi de buffer brut
   protocol :f: envoi du mode, envoi du nom de fichier, envoi du buffer
   protocol :d: envoi du mode, (dir:) envoi du nombre de fichier, (re:)if dir ? (goto dir;) : envoi du nom de fichier, envoi du buffer(goto re;)
   protocol :signal: confirmation
@@ -114,7 +114,7 @@ void ft_serv_end()
 
 	pid = ft_pidsave(0);
 	kill(pid, SIGINT);
-    exit(0);
+	exit(0);
 }
 
 void error(char *strerr)

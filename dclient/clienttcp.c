@@ -6,17 +6,16 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:03:39 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/25 09:07:28 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/27 06:02:21 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libsock/ft_inet.h"
-#include "../libft/libft.h"
+#include "../libft/includes/libft.h"
 #define PORT 24000
-#define IP /*"10.11.11.23"/*/"127.0.0.1"
 #define SIZE_FILENAME 256
 
-int ft_cli_socktcp(t_sockaddr_in *sin);
+int ft_cli_socktcp(t_sockaddr_in *sin, char *login);
 void ft_commutateur(int sock, char **argv);
 
 /*protocol :finaliter: eradication du protocol*/
@@ -29,16 +28,16 @@ int main(int argc, char **argv)
 {
 	int sock;
 	t_sockaddr_in *sin;
-	char *user;//[user]
+	char *user;
 
-	if (argc != 3)
+	if (argc != 4)
 	{
 		ft_putendl("error -> bad argument");
 		exit(0);
 	}
 	sin = (t_sockaddr_in *)malloc(sizeof(t_sockaddr_in));
 	ft_bzero(sin, sizeof(t_sockaddr_in));
-	sock = ft_cli_socktcp(sin);
+	sock = ft_cli_socktcp(sin, argv[3]);
 
 	printf("port = %d\n", (int)sin->sin_port);
 	errno = 0;
@@ -50,13 +49,12 @@ int main(int argc, char **argv)
 		error("connect -> ");
 	}
 	ft_putendl("connected");
-	user = getenv("USER=");//[user]
-	ft_putstr_fd(user, sock);//[user]
+	user = getenv("USER=");
+	ft_putstr_fd(user, sock);
 	write(sock, "\0", 1);
 	ft_commutateur(sock, argv);
 	ft_putendl("send");
 
-	sleep(2);
 	close(sock);
 	return (0);
 }
@@ -85,16 +83,23 @@ void ft_commutateur(int sock, char **argv)
 		printf("no mode %c bad argument\n", mode);
 }
 
-int ft_cli_socktcp(t_sockaddr_in *sin)
+int ft_cli_socktcp(t_sockaddr_in *sin, char *login)
 {
 	int sock;
 
 	if ((sock = socket(PF_INET, SOCK_STREAM, 0)) == -1)
 		error("socket -> ");
-	sin->sin_addr.s_addr = ft_inet_addr(IP);
+	if (!(sin->sin_addr.s_addr = ft_inet_addr(locate(login))))
+		error("inet error ->");
 	sin->sin_family = PF_INET;
 	sin->sin_port = ft_htons(PORT);
 
 	ft_putendl("connect");
 	return (sock);
+}
+
+void error(char *strerr)
+{
+	perror(strerr);
+	exit(0);
 }

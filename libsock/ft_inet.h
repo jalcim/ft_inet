@@ -4,6 +4,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <fcntl.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -13,6 +14,7 @@
 #include <string.h>
 #include <poll.h>
 #include <dirent.h>
+#include <signal.h>
 
 typedef struct dirent t_dirent;
 typedef struct sockaddr_in t_sockaddr_in;
@@ -55,6 +57,9 @@ unsigned long int ft_inet_addr(const char *ip);
 int ft_inet_aton(const char *cp, struct in_addr *addr);
 unsigned short ft_htons(unsigned short value);
 unsigned int ft_htonl(unsigned int value);
+
+char    *locate(char *user);
+char    *ft_reip(char *s);
 
 int ft_recv_file(int socket, int nb);
 void ft_send_file(int socket, char *filename, int nb, DIR **rep);

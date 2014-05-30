@@ -70,7 +70,7 @@ unsigned short ft_htons(unsigned short value)
   return (value >> 8 | value << 8);
 }
 
-unsigned int ft_htonl(unsigned int value) // ca KIFFEEEE by scirciu
+unsigned int ft_htonl(unsigned int value)
 {
   char*c;
 

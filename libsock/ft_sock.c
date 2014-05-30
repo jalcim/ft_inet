@@ -6,15 +6,15 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 08:50:10 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/22 10:39:48 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/03/26 18:54:40 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_inet.h"
-#include "../libft/libft.h"
+#include "../libft/includes/libft.h"
 
 void ft_socktcp(int *sock, int port, t_sockaddr_in *serveur)
-{//creation du nom et bindage du nom sur socket
+{
     if ((*sock = socket(PF_INET, SOCK_STREAM, 0)) == -1)
         error("socket -> ");
     serveur->sin_family = PF_INET;
@@ -29,20 +29,17 @@ void ft_socktcp(int *sock, int port, t_sockaddr_in *serveur)
 }
 
 void ft_waitsocktcp(int sock, t_pollfd *event, int size_fille, int time)
-{//attente de connection et listage
-	ft_putendl("wait");
+{
     event->fd = sock;
     event->events = POLLIN;
-	ft_putendl("poll");
     if ((poll(event, sizeof(t_pollfd), time)) == -1)
         error("poll -> ");
-	ft_putendl("listen");
-    if (listen(event[0].fd, size_fille) == -1)//liste chaine ?
+    if (listen(event[0].fd, size_fille) == -1)
         error("listen -> ");
 }
 
 t_server *ft_serv_init()
-{//initialise la structure server standar
+{
 	t_server *server;
 
 	if (!(server = (t_server *)malloc(sizeof(t_server))))
@@ -65,11 +62,8 @@ void ft_waitsock(int fd)
 		read(fd, &buf, 1);
 		write(1, &buf, 1);
 	}
-	ft_putendl("wait write");
     event.fd = fd;
     event.events = POLLIN;
-	ft_putendl("poll");
     if ((poll(&event, sizeof(t_pollfd), 1)) == -1)
         error("poll -> ");
-	ft_putendl("next step");
 }

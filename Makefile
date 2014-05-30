@@ -15,17 +15,19 @@ CLT = client
 
 SSRC = dserver/serveurtcp.c
 CSRC = dclient/clienttcp.c
-SLSOCK = libsock/ft_inetaddr.c libsock/ft_sock_in_file.c libsock/ft_sock.c libsock/servcom.c libsock/ft_readfd.c
-CLSOCK = libsock/ft_inetaddr.c libsock/ft_sock_in_file.c libsock/ft_sock.c libsock/ft_readfd.c
+#SLSOCK = libsock/ft_inetaddr.c libsock/ft_sock_in_file.c libsock/ft_sock.c libsock/servcom.c libsock/ft_readfd.c
+#CLSOCK = libsock/ft_inetaddr.c libsock/ft_sock_in_file.c libsock/ft_sock.c libsock/ft_readfd.c
 LFT = -L libft/ -lft
 FLAG = -Wall -Werror -Wextra
 
 all : $(SRV) $(CLT)
 
 $(SRV):
-	gcc $(FLAG) $(LFT) -o $(SRV) $(SSRC) $(SLSOCK)
+	#gcc $(FLAG) $(LFT) $(SSRC) $(SLSOCK) chat/chat.a -o $(SRV)
+	gcc $(FLAG) $(LFT) $(SSRC) main.c libsock/ft_inet.a chat/chat.a -o $(SRV)
 $(CLT):
-	gcc $(FLAG) $(LFT) -o $(CLT) $(CSRC) $(CLSOCK)
+	#gcc $(FLAG) $(LFT) $(CSRC) $(CLSOCK) -o $(CLT)
+	gcc $(FLAG) $(LFT) $(CSRC) libsock/ft_inet.a -o $(CLT)
 clean:
 
 fclean: clean
