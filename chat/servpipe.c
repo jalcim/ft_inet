@@ -46,6 +46,7 @@ void start_chat()
     }
   //}
   //end
+  dup2(2, 1);
   while (chat->prev)
     chat = chat->prev;
   int i = 0;

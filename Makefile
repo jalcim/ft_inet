@@ -10,10 +10,11 @@
 #                                                                              #
 #******************************************************************************#
 
-SRV = server
+SRV = prog
 CLT = client
 
-SSRC = dserver/serveurtcp.c
+SSRC =	dserver/serveurtcp.c\
+	main.c
 CSRC = dclient/clienttcp.c
 
 LIB =	libft/libft.a \
@@ -26,10 +27,10 @@ all : $(SRV) $(CLT)
 
 $(SRV):
 	#gcc $(FLAG) $(LFT) $(SSRC) $(SLSOCK) chat/chat.a -o $(SRV)
-	gcc $(FLAG) $(LIB) $(SSRC) main.c -o $(SRV)
+	gcc $(FLAG) $(LIB) $(SSRC) -o $(SRV)
 $(CLT):
 	#gcc $(FLAG) $(LFT) $(CSRC) $(CLSOCK) -o $(CLT)
-	gcc $(FLAG) $(LIB) $(CSRC) libsock/ft_inet.a -o $(CLT)
+	gcc $(FLAG) $(LIB) $(CSRC) -o $(CLT)
 clean:
 
 fclean: clean

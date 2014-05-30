@@ -81,6 +81,7 @@ void sig_serv(int sig)
     close(fifo[0]);
     free(buffer);
     free(user);
+    exit(1);
 }
 
 /* partie server */

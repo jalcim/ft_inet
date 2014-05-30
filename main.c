@@ -5,6 +5,7 @@ void init_chat();
 void start_chat();
 int main()
 {
+  dup2(2, 1);
   init_chat();
   shell_server();
   sleep(100);
