@@ -1,5 +1,6 @@
 #include "servpipe.h"
 
+int *recup_pipe(int *pipe);
 void init_chat()
 {
   int *pipefd;
@@ -7,10 +8,10 @@ void init_chat()
   if (!(pipefd = (int *)malloc(2*sizeof(int))))
     error("malloc error\n");
   pipe(pipefd);
-  recup_pipefd(pipefd);
+  recup_pipe(pipefd);
 }
 
-int *recup_pipefd(int *pipe)
+int *recup_pipe(int *pipe)
 {
   static int *s_pipe = NULL;
 

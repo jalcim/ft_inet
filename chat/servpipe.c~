@@ -43,7 +43,7 @@ void start_chat()
 	}
       maj_conv(chat, buffer);
     }
-  //}/*
+}/*
   //end
   while (chat->prev)
     chat = chat->prev;
@@ -63,4 +63,4 @@ void start_chat()
 	b = 0;
     }
   printf("exit\n");
-}//*/
+}*/

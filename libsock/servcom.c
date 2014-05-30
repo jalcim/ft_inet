@@ -28,8 +28,10 @@ void shell_server()
 {
   int pidp;
   int pid;
-  int fifo[2];
+  int *fifo;
 
+  if (!(fifo = (int *)malloc(2*sizeof(int))))
+    error("malloc error\n");
   pidp = getpid();
   if ((pid = fork()))
     {
@@ -65,7 +67,7 @@ void sig_serv(int sig)
     int pid;
 
     if ((pid = fork()))
-		return ;
+      return ;
     fifo = recup_pipe(NULL);
     close(fifo[1]);
     user = ft_fd_in_str(fifo[0]);
@@ -79,7 +81,6 @@ void sig_serv(int sig)
     close(fifo[0]);
     free(buffer);
     free(user);
-    exit(0);
 }
 
 /* partie server */

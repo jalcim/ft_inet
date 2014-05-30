@@ -21,7 +21,7 @@ typedef struct sockaddr_in t_sockaddr_in;
 typedef struct in_addr t_in_addr;
 typedef struct pollfd t_pollfd;
 typedef struct sockaddr t_sockaddr;
-typedef struct	s_aton t_aton;
+typedef struct s_aton t_aton;
 typedef struct s_server t_server;
 typedef struct s_client t_client;
 

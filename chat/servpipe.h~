@@ -21,7 +21,7 @@ struct s_conv
 };
 
 void error(char *strerr);
-int *recup_pipefd(int *fd);
+int *recup_pipe(int *fd);
 t_conv *recup_chat(t_conv *chat);
 void init_chat();
 void maj_conv(t_conv *chat, char *buffer);
