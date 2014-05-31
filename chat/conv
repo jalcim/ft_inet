@@ -1,0 +1,36 @@
+chat.c:    while (schat->next)
+chat.c:	schat = schat->next;
+chat.c:	if (schat->prev)
+chat.c:	    while (++compt < schat->prev->cpt)
+chat.c:	      if (schat->prev->conv[compt])
+chat.c:		free(schat->prev->conv[compt]);
+chat.c:	    free(schat->prev->login);
+chat.c:	    free(schat->prev);
+chat.c:	    schat->prev = NULL;
+chat.c:  if (!chat || !chat->login)
+chat.c:  while (chat->prev)
+chat.c:    chat = chat->prev;
+chat.c:  while (chat->next && chat->login && login && strcmp(chat->login, login))
+chat.c:    chat = chat->next;
+chat.c:  if (!(strcmp(chat->login, login)))
+chat.c:  if (!(chat->login = login))
+chat.c:  if (!(chat->conv = malloc(sizeof(char *) * 2)))
+chat.c:  chat->conv[0] = NULL;
+chat.c:  chat->conv[1] = NULL;
+chat.c:  chat->cpt = 0;
+chat.c:  chat->cpt_read = 0;
+chat.c:  if (chat->cpt)
+chat.c:    chat->conv = ft_repointe(chat->conv, chat->cpt);
+chat.c:  chat->conv[chat->cpt] = buffer;
+chat.c:  printf("cpt = %d\n", chat->cpt);
+chat.c:  printf("maj conv conv = :%s:\n", chat->conv[chat->cpt]);
+chat.c:  chat->cpt++;
+chat.c:  chat->conv[chat->cpt] = NULL;
+servpipe.c:  while (chat->prev)
+servpipe.c:    chat = chat->prev;
+servpipe.c:      chat->cpt_read = 0;
+servpipe.c:      if (chat->next)
+servpipe.c:	chat = chat->next;
+servpipe.c:  if (chat->cpt_read >= chat->cpt)
+servpipe.c:	 chat->login, chat->cpt_read, chat->conv[chat->cpt_read]);
+servpipe.c:  chat->cpt_read++;

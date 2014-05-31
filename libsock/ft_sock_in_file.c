@@ -144,6 +144,7 @@ char *ft_fd_in_str(int fd)
     char *buffer;
     int compt;
 
+    write(2, "lecture !!!!!\n", 14);
     compt = -1;
     tmp = ft_strnew(1024);
     buffer = ft_strnew(1);
@@ -161,6 +162,8 @@ char *ft_fd_in_str(int fd)
     tmp[compt] = '\0';
     ft_fusion(&buffer, tmp);
     free(tmp);
+    ft_putstr("buffer = ");
+    ft_putendl(buffer);
     return (buffer);
 }
 

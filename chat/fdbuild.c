@@ -18,10 +18,10 @@ char *ft_fd_in_str(int fd)
     char *buffer;
     int compt;
 
-    write(1, "ft_fd_in_str\n", 13);
+    write(2, "ft_fd_in_str\n", 13);
     compt = -1;
-    tmp = malloc(1024);
-    buffer = malloc(1);
+    tmp = (char *)malloc(1024 * sizeof(char));
+    buffer = (char *)malloc(sizeof(char));
     buffer[0] = '\0';
     while (read(fd, &tmp[++compt], 1) > 0 && tmp[compt] != '\0')
       if (compt == 1022)
@@ -34,6 +34,7 @@ char *ft_fd_in_str(int fd)
     tmp[compt] = '\0';
     ft_fusion(&buffer, tmp);
     free(tmp);
+    printf("fd_in_str buffer = :%s:\n", buffer);
     return (buffer);
 }
 

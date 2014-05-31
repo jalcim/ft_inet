@@ -5,10 +5,12 @@ void init_chat();
 void start_chat();
 int main()
 {
+  char buf;
+
   dup2(2, 1);
   init_chat();
   shell_server();
-  sleep(100);
+  read(0, &buf, 1);
   printf("start_chat\n");
   start_chat();
   sleep(10);

@@ -33,9 +33,21 @@ void start_chat()
   fd = recup_pipefd(NULL);
   while (size_fd(fd[0]))
     {
+      if (chat)
+	{
+	  printf("44444\n");
+	  print_struct(chat);
+	  printf("4444\n\n");
+	}
       if ((!(login = ft_fd_in_str(fd[0])))
 	  || (!(buffer = ft_fd_in_str(fd[0]))))
 	break;
+      /*      if (chat)
+	{
+	  printf("999\n");
+	  print_struct(chat);
+	  printf("999\n\n");
+	  }*/
       printf("lecture de la part de :%s: message :%s:\n",login, buffer);
       if ((chat = find_login(login, chat)))
 	printf("chat trouver\n");
@@ -44,8 +56,13 @@ void start_chat()
 	  chat = creat_conv(login);
 	  printf("chat creer\n");
 	}
-      printf("start buffer = :%s:\n", buffer);
       maj_conv(chat, buffer);
+      printf("56666\n");
+      print_struct(chat);
+      printf("56666\n\n");
+      printf("start buffer = :%s:\n", buffer);
+      login = NULL;
+      buffer = NULL;
     }
   chat = recup_chat(NULL);
   print_struct(chat);
@@ -53,29 +70,31 @@ void start_chat()
 
 void print_struct(t_conv *chat)
 {
-  int b = 1;
+  //  int b = 1;
 
+  printf("print_struct\n");
   dup2(2, 1);
-  while (chat->prev)
-    chat = chat->prev;
-  while (b)
-    {
+  //  while (chat->prev)
+  //chat = chat->prev;
+  //  while (b)
+  //{
       while (print_str_struct(chat))
 	{}
-      if (chat->next)
-	chat = chat->next;
-      else
-	b = 0;
-    }
-  printf("exit\n");
+      chat->cpt_read = 0;
+      //      if (chat->next)
+      //chat = chat->next;
+      //      else
+	//b = 0;
+      // }
+  printf("print_struct out\n");
 }
 
 int print_str_struct(t_conv *chat)
 {
   if (chat->cpt_read >= chat->cpt)
     return (0);
-  printf("login :%s: chat conv[%d] = :%s:\n", 
-	 chat->login, chat->cpt_read, chat->conv[chat->cpt_read]);
+  printf("login :%s: chat conv[%d] sur [%d]= :%s:\n", 
+	 chat->login, chat->cpt_read, chat->cpt, chat->conv[chat->cpt_read]);
   chat->cpt_read++;
   return (1);
 }

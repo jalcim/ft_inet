@@ -77,12 +77,16 @@ void add_chain(t_conv *block)
   recup_chat(block);
 }
 
+void print_struct(t_conv *chat);
 char **ft_repointe(char **tab1, int cpt);
 void maj_conv(t_conv *chat, char *buffer)
 {
   printf("maj conv\n");
+  print_struct(chat);
+  sleep(1);
   if (chat->cpt)
     chat->conv = ft_repointe(chat->conv, chat->cpt);
+  print_struct(chat);
   printf("maj conv buffer = :%s:\n", buffer);
   chat->conv[chat->cpt] = buffer;
   printf("cpt = %d\n", chat->cpt);
@@ -97,7 +101,8 @@ char **ft_repointe(char **tab1, int cpt)
   int compt;
 
   printf("reajustement des pointeurs cpt = %d\n", cpt);
-  new = (char **)malloc((cpt * sizeof(char *)) + sizeof(char *));
+  printf("malloc :%d:\n", cpt);
+  new = (char **)malloc((cpt+1 * sizeof(char *)) + sizeof(char *));
   compt = 0;
   while (compt < cpt)
     {
@@ -105,7 +110,7 @@ char **ft_repointe(char **tab1, int cpt)
       new[compt] = tab1[compt];
       compt++;
     }
-  new[compt] = NULL;
+  new[cpt] = NULL;
   printf("reajustement des pointeurs out\n");
   return (new);
 }
