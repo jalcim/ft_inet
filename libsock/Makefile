@@ -6,7 +6,7 @@
 #    By: nbahri <nbahri@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2013/11/20 13:59:15 by nbahri            #+#    #+#              #
-#    Updated: 2014/03/26 05:43:18 by jalcim           ###   ########.fr        #
+#    Updated: 2014/06/06 19:38:07 by jalcim           ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -19,16 +19,15 @@ SRC =	ft_inetaddr.c\
 	ft_sock.c\
 	ft_sock_in_file.c\
 	locate.c\
-	servcom.c
+	servcom.c\
+	chat.c
 
 SRCO = $(SRC:.c=.o)
-
-SRCH = ft_inet.h
 
 all: $(NAME)
 
 $(NAME):
-		gcc -Wall -Wextra -Werror -c $(SRC) -I includes
+		gcc -Wall -Wextra -Werror -c $(SRC)
 		ar rc $(NAME) $(SRCO)
 		ranlib $(NAME)
 clean:

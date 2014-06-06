@@ -1,3 +1,5 @@
+#ifndef __ft_inet__
+#define __ft_inet__
 #include <ctype.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -99,3 +101,7 @@ int *recup_pipe(int *fifo);
 int ft_pidsave(int pid);
 void killslave();
 void error(char *strerr);
+
+void chat_rcv(char *login, char *buffer);
+void cmd_dist_rcv(char *login, char *buffer);
+#endif

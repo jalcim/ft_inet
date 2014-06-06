@@ -6,12 +6,14 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/28 01:07:00 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/27 02:34:27 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/06/06 19:39:57 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_inet.h"
+#include "../bdd/transit_bdd.h"
 #include "../libft/includes/libft.h"
+
 
 /* partie shell
    pere retourne au shell
@@ -21,8 +23,6 @@
    SIGUSR2 == cmd
 */
 t_server	*recup(t_server *server);
-int         chat(char *login, char *b);
-//int         ft_distcmd(char *login, char *line);
 
 void shell_server()
 {
@@ -30,6 +30,8 @@ void shell_server()
   int pid;
   int *fifo;
 
+  init_transit(0);
+  init_data(0);
   if (!(fifo = (int *)malloc(2*sizeof(int))))
     error("malloc error\n");
   pidp = getpid();
@@ -73,11 +75,9 @@ void sig_serv(int sig)
     user = ft_fd_in_str(fifo[0]);
     buffer = ft_fd_in_str(fifo[0]);
     if (sig == SIGUSR1)
-      chat(user, buffer);//ft_putstr("chat\n");
+		chat_rcv(user, buffer);//init_transit(4); init_data(4); transit(login, buffer);
     else if (sig == SIGUSR2)
-      ft_putstr("distcmd\n");
-      //      if (ft_distcmd(user, buffer))
-      //ft_putstr("commande failled\n");
+		cmd_dist_rcv(user, buffer);//init_transit(2); init_data(2); dup2(socket, 1); transit(login, buffer); execve(buffer);
     close(fifo[0]);
     free(buffer);
     free(user);
