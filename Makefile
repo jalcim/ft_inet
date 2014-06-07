@@ -6,7 +6,7 @@
 #    By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/02/15 05:54:35 by jalcim            #+#    #+#              #
-#    Updated: 2014/06/06 19:12:50 by jalcim           ###   ########.fr        #
+#    Updated: 2014/06/07 11:17:40 by jalcim           ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -21,7 +21,7 @@ LIB =	libft/libft.a \
 		libsock/ft_inet.a \
 		bdd/bdd.a
 
-FLAG = -Wall -Werror -Wextra
+FLAG = -g -Wall -Werror -Wextra
 
 all : $(SRV) $(CLT)
 

@@ -38,3 +38,12 @@ char *read_line(int fd)
 		}
 	}
 }
+
+int fd_size(int fd)
+{
+	struct stat status;
+
+	fstat(fd, &status);
+
+	return (status.st_size);
+}

@@ -1,11 +1,8 @@
-#ifndef __bdd__
-#define __bdd__
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/stat.h>
-#include "../libsock/ft_inet.h"
 
 typedef struct s_datalist t_datalist;
 
@@ -33,5 +30,5 @@ t_datalist *find_login(char *login, t_datalist *data);
 t_datalist *creat_datalist(char *login);
 void add_chain(t_datalist *block);
 
+int fd_size(int fd);
 char *read_line(int fd);
-#endif

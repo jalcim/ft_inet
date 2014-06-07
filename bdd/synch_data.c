@@ -9,7 +9,7 @@ void synch_data()//a appeler dans l'interface chat et dans une fonction de secur
   int size;
 
   pipefd = recup_pipefd(NULL);
-  while ((size = size_fd(pipefd[0])))
+  while ((size = fd_size(pipefd[0])))
     {
       login = read_line(pipefd[0]);
       buffer = read_line(pipefd[0]);

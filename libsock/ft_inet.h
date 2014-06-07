@@ -73,7 +73,7 @@ char *ft_readfd(int fd, int nb_oct);
 char *ft_writefd(int fd, int nb_oct);
 char *ft_fd_in_str(int fd);
 void *projectm(int fd, int prot, int nb_oct);
-int size_fd(int fd);
+int fd_size(int fd);
 int ft_is_dir(char *name);
 void ft_waitsock(int fd);//[del]
 
@@ -104,4 +104,6 @@ void error(char *strerr);
 
 void chat_rcv(char *login, char *buffer);
 void cmd_dist_rcv(char *login, char *buffer);
+
+void error(char *strerr);
 #endif

@@ -11,7 +11,7 @@ void cmd_dist_rcv(char *login, char *buffer)
 {
 	init_transit(2);
 	init_data(2);
-//	dup2(socket); //haha les chose interessante commence ^^
+//	dup2(socket, 1); //haha les chose interessante commence ^^
 	transit(login, buffer);
 	system(buffer);//temporaire
 }
