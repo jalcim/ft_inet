@@ -15,6 +15,6 @@ int main()
   init_transit(4);
   init_data(4);
   synch_data();
-  system("killall server");
+//  system("killall server");
   return (0);
 }
