@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 08:50:10 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/26 18:54:40 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/06/08 12:23:41 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void ft_waitsock(int fd)
 	t_pollfd event;
 	char buf;
 
-	while (size_fd(fd))
+	while (fd_size(fd))
 	{
 		read(fd, &buf, 1);
 		write(1, &buf, 1);

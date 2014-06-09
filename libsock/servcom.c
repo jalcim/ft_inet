@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/28 01:07:00 by jalcim            #+#    #+#             */
-/*   Updated: 2014/06/07 11:42:36 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/06/08 15:04:40 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void shell_server()
     recup_pipe(fifo);
     if (!(pid = fork()))
       {
-	ft_pidsave(pidp);
-	wait_sig();
+		  ft_pidsave(pidp);
+		  wait_sig();
       }
     ft_pidsave(pid);
     signal(SIGINT, killslave);

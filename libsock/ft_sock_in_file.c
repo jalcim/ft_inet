@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 04:45:51 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/27 00:09:45 by jbert            ###   ########.fr       */
+/*   Updated: 2014/06/09 03:40:14 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,43 +137,44 @@ int ft_recv_file(int socket, int nb)
 	return (1);
 }
 
-static void ft_fusion(char **buffer, char *tmp);
 char *ft_fd_in_str(int fd)
 {
-    char *tmp;
-    char *buffer;
-    int compt;
+	char *tmp;
+	char *buffer;
+	int compt;
 
-    write(2, "lecture !!!!!\n", 14);
-    compt = -1;
-    tmp = ft_strnew(1024);
-    buffer = ft_strnew(1);
-    buffer[0] = '\0';
-    while (read(fd, &tmp[++compt], 1) > 0 && tmp[compt] != '\0')
-    {
-        if (compt == 1022)
-        {
-            tmp[compt + 1] = '\0';
-            ft_fusion(&buffer, tmp);
-			ft_bzero(tmp, 1024);
-            compt = -1;
-        }
-    }
-    tmp[compt] = '\0';
-    ft_fusion(&buffer, tmp);
-    free(tmp);
-    ft_putstr("buffer = ");
-    ft_putendl(buffer);
-    return (buffer);
+	compt = 0;
+	tmp = (char *)malloc(2 * sizeof(char));
+	bzero(tmp, 2);
+	buffer = NULL;
+	read(fd, tmp, 1);
+	tmp[++compt] = '\0';
+	while (42)
+	{
+		if (!buffer)
+		{
+			buffer = (char *)malloc(compt+2 * sizeof(char));
+			strcpy(buffer, tmp);
+			free(tmp);
+			tmp = NULL;
+			read(fd, &buffer[compt], 1);
+			if (!(buffer[compt]))
+				return (buffer);
+			buffer[++compt] = '\0';
+		}
+		else
+		{
+			tmp = malloc(compt+2 * sizeof(char));
+			strcpy(tmp, buffer);
+			free(buffer);
+			buffer = NULL;
+			read(fd, &tmp[compt], 1);
+			if (!(tmp[compt]))
+				return (tmp);
+			tmp[++compt] = '\0';
+		}
+	}
 }
-
-static void ft_fusion(char **buffer, char *tmp)
-{
-    if (!((*buffer) = (char *)realloc((*buffer), (ft_strlen((*buffer)) + ft_strlen(tmp)) + 1)))
-        error("realloc ->");
-    ft_strcat((*buffer), tmp);
-}
-
 char *ft_recv_filename(int sock)
 {
     char *filename;

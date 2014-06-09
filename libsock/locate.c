@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/03/26 02:21:12 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/27 03:18:02 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/06/09 00:28:39 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*locate(char *user)
 		ip[strlen(ip) - 6] = 0;
 		if (ip[0] == 'e' && ip[1] == 'r')
 			return (NULL);
-		return (ft_reip(ip));
+		return (/*ft_reip(ip)*/"10.13.8.19");
 	}
 	else
 	{

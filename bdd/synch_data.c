@@ -8,13 +8,17 @@ void synch_data()//a appeler dans l'interface chat et dans une fonction de secur
 
   int size;
 
-  pipefd = recup_pipefd(NULL);
+  if (!(pipefd = recup_pipefd(NULL)))
+  {
+	  printf("pipe not found");
+	  exit(-1);
+  }
   while ((size = fd_size(pipefd[0])))
     {
       login = read_line(pipefd[0]);
       buffer = read_line(pipefd[0]);
-	  printf("login == :%s:\n", login);
-	  printf("buffer == :%s:\n\n", buffer);
+	  printf("bdd login == :%s:\n", login);
+	  printf("bdd buffer == :%s:\n\n", buffer);
       gest(login, buffer);
    }
 }

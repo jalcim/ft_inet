@@ -6,13 +6,13 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:32:17 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/27 06:01:38 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/06/09 03:29:30 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libsock/ft_inet.h"
 #include "../libft/includes/libft.h"
-#define PORT 24000
+#define PORT 25000
 #define MAX_CLIENT 50
 #define SIZE_FILENAME 256
 
@@ -67,7 +67,7 @@ void acceuil(t_server *server, int pid)
 		}
 		close(server->sock);
 		exit(0);
-	}
+ 	}
 }
 
 char cmd_sock(int sock)

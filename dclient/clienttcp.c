@@ -6,13 +6,13 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:03:39 by jalcim            #+#    #+#             */
-/*   Updated: 2014/03/27 06:02:21 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/06/09 00:28:44 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libsock/ft_inet.h"
 #include "../libft/includes/libft.h"
-#define PORT 24000
+#define PORT 25000
 #define SIZE_FILENAME 256
 
 int ft_cli_socktcp(t_sockaddr_in *sin, char *login);
@@ -39,12 +39,9 @@ int main(int argc, char **argv)
 	ft_bzero(sin, sizeof(t_sockaddr_in));
 	sock = ft_cli_socktcp(sin, argv[3]);
 
-	printf("port = %d\n", (int)sin->sin_port);
 	errno = 0;
 	if ((connect(sock, (t_sockaddr*)sin, sizeof(t_sockaddr))))
 	{
-		if (errno == EACCES)
-			ft_putendl("acces refuser");
 		close(sock);
 		error("connect -> ");
 	}

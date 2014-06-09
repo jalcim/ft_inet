@@ -4,21 +4,12 @@ void print_struct();
 int main()
 {
 	init_transit(0);
-	init_transit(4);
 	init_data(0);
-	init_data(4);
 
-	int boll = 0;
-
-	goto nd;
-re:
-	init_transit(2);	
-	init_data(2);
-	boll = 1;
-	sleep(5);
-nd:
 	if (!fork())
     {
+		init_transit(4);
+		init_data(4);
 		transit("jalcim", "test 0");
 		transit("jalcim", "test 1");
 		transit("jalcim", "test 2");
@@ -76,11 +67,11 @@ nd:
 		exit(0);
     }
 	sleep(1);
-  synch_data();
-  printf("ok\n");
-  sleep(2);
-  print_struct();
-  if (!boll)
-	  goto re;
-  return (0);
+	init_transit(4);
+	init_data(4);
+	synch_data();
+	printf("ok\n");
+	sleep(2);
+	print_struct();
+	return (0);
 }
