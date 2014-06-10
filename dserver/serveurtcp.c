@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:32:17 by jalcim            #+#    #+#             */
-/*   Updated: 2014/06/09 03:29:30 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/06/10 09:45:45 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ void acceuil(t_server *server, int pid)
 		else if (cmd == 'c' || cmd == 'x')
 		{
 			buffer = ft_fd_in_str(server->sock);
-			servcom(cmd, user, buffer, pid);
-		}
+			servcom(cmd, user, buffer, pid, server->sock);
+		}//une suite de la connexion au lieu de la couper ?
 		close(server->sock);
 		exit(0);
  	}

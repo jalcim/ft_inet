@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:03:39 by jalcim            #+#    #+#             */
-/*   Updated: 2014/06/09 00:28:44 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/06/10 04:42:02 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,11 @@ int main(int argc, char **argv)
 	write(sock, "\0", 1);
 	ft_commutateur(sock, argv);
 	ft_putendl("send");
-
+//
+	char buff;
+	while (read(sock, &buff, 1))
+		write(1, &buff, 1);		
+//
 	close(sock);
 	return (0);
 }
@@ -83,10 +87,17 @@ void ft_commutateur(int sock, char **argv)
 int ft_cli_socktcp(t_sockaddr_in *sin, char *login)
 {
 	int sock;
+	char *ip;
 
 	if ((sock = socket(PF_INET, SOCK_STREAM, 0)) == -1)
 		error("socket -> ");
-	if (!(sin->sin_addr.s_addr = ft_inet_addr(locate(login))))
+	if (!(ip = locate(login)))
+	{
+		printf("login invalide\n");
+		exit(-1);
+	}
+	printf("%s : %s\n", login, ip);
+	if (!(sin->sin_addr.s_addr = ft_inet_addr(ip)))
 		error("inet error ->");
 	sin->sin_family = PF_INET;
 	sin->sin_port = ft_htons(PORT);

@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/28 01:07:00 by jalcim            #+#    #+#             */
-/*   Updated: 2014/06/08 15:04:40 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/06/10 10:40:22 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,13 @@ void shell_server()
     error("malloc error\n");
   pidp = getpid();
   if ((pid = fork()))
-    {
+  {
       ft_pidsave(pid);
       return ;
-    }
+  }
     pipe(fifo);
     recup_pipe(fifo);
+	init_pipe_redir();
     if (!(pid = fork()))
       {
 		  ft_pidsave(pidp);
@@ -77,7 +78,8 @@ void sig_serv(int sig)
     if (sig == SIGUSR1)
 		chat_rcv(user, buffer);//init_transit(4); init_data(4); transit(login, buffer);
     else if (sig == SIGUSR2)
-		cmd_dist_rcv(user, buffer);//init_transit(2); init_data(2); dup2(socket, 1); transit(login, buffer); execve(buffer);
+//init_transit(2); init_data(2); dup2(socket, 1); transit(login, buffer); execve(buffer);
+		cmd_dist_rcv(user, buffer);
     close(fifo[0]);
     free(buffer);
     free(user);
@@ -85,16 +87,33 @@ void sig_serv(int sig)
 }
 
 /* partie server */
-void servcom(char mode, char *user, char *buffer, int pid)
+void servcom(char mode, char *user, char *buffer, int pid, int sock)
 {
     int *fifo;
+	int *pipefd;
 
     fifo = recup_pipe(NULL);
     close(fifo[0]);
     if (mode == 'c')
         kill(pid, SIGUSR1);
     else if (mode == 'x')
+	{//	redirection (sortie -> pipe, pipe -> socket)
+		if (!(pipefd = pipe_redir(NULL)))
+		{
+			ft_putendl("pipe_redir uninitialised");
+			exit(-1);
+		}
+		write(1, "redirection de commande\n", 24);
+		close(pipefd[1]);
+		dup2(sock, pipefd[0]);
         kill(pid, SIGUSR2);
+
+		sleep(1);
+		char buf;
+		while (read(pipefd[0], &buf, 1))
+			write(1, &buf, 1);
+		write(1, "alors ?\n", 8);
+	}
     else
     {
         ft_putstr("argument not valide\n");

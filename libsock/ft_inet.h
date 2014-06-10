@@ -96,7 +96,7 @@ void servershell(int pid);
 void shell_server();
 void wait_sig();
 void sig_serv(int sig);
-void servcom(char mode, char *user, char *buffer, int pid);
+void servcom(char mode, char *user, char *buffer, int pid, int sock);
 int *recup_pipe(int *fifo);
 int ft_pidsave(int pid);
 void killslave();
@@ -104,6 +104,8 @@ void error(char *strerr);
 
 void chat_rcv(char *login, char *buffer);
 void cmd_dist_rcv(char *login, char *buffer);
+void init_pipe_redir();
+int *pipe_redir(int *fd);
 
 void error(char *strerr);
 #endif

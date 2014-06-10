@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/03/26 02:21:53 by jalcim            #+#    #+#             */
-/*   Updated: 2014/06/09 01:30:15 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/06/10 02:07:24 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ char	*ft_reip(char *origin)
         cpt2++;
         cpt1++;
     }
+	printf("connexion a :%s:\n", final);
 	return (final);
 /*
 	char	*s2;
