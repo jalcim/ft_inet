@@ -8,7 +8,7 @@ int main()
 {
   char buf;
 
-  dup2(2, 1);
+//  dup2(2, 1);
   shell_server();
 
   read(0, &buf, 1);

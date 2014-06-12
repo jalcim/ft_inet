@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/28 01:07:00 by jalcim            #+#    #+#             */
-/*   Updated: 2014/06/10 10:40:22 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/06/11 16:11:51 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,48 +77,54 @@ void sig_serv(int sig)
     buffer = ft_fd_in_str(fifo[0]);
     if (sig == SIGUSR1)
 		chat_rcv(user, buffer);//init_transit(4); init_data(4); transit(login, buffer);
-    else if (sig == SIGUSR2)
-//init_transit(2); init_data(2); dup2(socket, 1); transit(login, buffer); execve(buffer);
-		cmd_dist_rcv(user, buffer);
-    close(fifo[0]);
+    else if (sig == SIGUSR2)//init_transit(2); init_data(2); dup2(socket, 1); transit(login, buffer); execve(buffer);
+		cmd_dist_rcv(user, buffer); 
+	kill(ft_pidsave(0), SIGUSR1);
     free(buffer);
     free(user);
-    exit(1);
+    exit(0);
 }
 
 /* partie server */
+void synch()
+{
+	return ;
+}
 void servcom(char mode, char *user, char *buffer, int pid, int sock)
 {
     int *fifo;
 	int *pipefd;
+	signal(SIGUSR1, synch);
 
     fifo = recup_pipe(NULL);
     close(fifo[0]);
     if (mode == 'c')
         kill(pid, SIGUSR1);
     else if (mode == 'x')
-	{//	redirection (sortie -> pipe, pipe -> socket)
+	{
 		if (!(pipefd = pipe_redir(NULL)))
-		{
-			ft_putendl("pipe_redir uninitialised");
-			exit(-1);
-		}
-		write(1, "redirection de commande\n", 24);
+			error("pipe_redir uninitialised");
+
+		write(1, "redirection de commande\n", 24);  
+		printf("ser pipe = %d && %d\n", pipefd[0], pipefd[1]);
 		close(pipefd[1]);
-		dup2(sock, pipefd[0]);
+		sock = sock;
+//		dup2(sock, pipefd[0]); //redirection (pipe -> socket)
         kill(pid, SIGUSR2);
 
-		sleep(1);
+		pause();
 		char buf;
-		while (read(pipefd[0], &buf, 1))
-			write(1, &buf, 1);
-		write(1, "alors ?\n", 8);
+		write(2, "test\n", 5);
+		if (size_fd(pipefd[0]))
+			while (read(pipefd[0], &buf, 1) > 0 && buf)
+				write(2 , &buf, 1);
+		else
+			ft_putstr_fd("non\n", 2);
+		write(2, "\nalors ?\n", 9);
+
 	}
     else
-    {
-        ft_putstr("argument not valide\n");
-		exit(0);
-    }
+        error("argument not valide");
     ft_putstr_fd(user, fifo[1]);
     write(fifo[1], "\0", 1);
     ft_putstr_fd(buffer, fifo[1]);

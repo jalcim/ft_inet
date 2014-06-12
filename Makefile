@@ -6,7 +6,7 @@
 #    By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/02/15 05:54:35 by jalcim            #+#    #+#              #
-#    Updated: 2014/06/07 11:17:40 by jalcim           ###   ########.fr        #
+#    Updated: 2014/06/11 01:26:34 by jalcim           ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -15,7 +15,8 @@ CLT = client
 
 SSRC =	dserver/serveurtcp.c\
 		main.c
-CSRC = dclient/clienttcp.c
+
+CSRC =	dclient/clienttcp.c
 
 LIB =	libft/libft.a \
 		libsock/ft_inet.a \

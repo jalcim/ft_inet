@@ -106,6 +106,7 @@ void chat_rcv(char *login, char *buffer);
 void cmd_dist_rcv(char *login, char *buffer);
 void init_pipe_redir();
 int *pipe_redir(int *fd);
+int size_fd(int fd);
 
 void error(char *strerr);
 #endif
