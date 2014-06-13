@@ -42,13 +42,11 @@ void cmd_dist_rcv(char *login, char *buffer)
 
 	if (!(pipefd = pipe_redir(NULL)))
 		error("pipe not found");
-	if (pipefd[0] != 13 || pipefd[1] != 14)
-		ft_putstr_fd("change\n", 2);
 	close(pipefd[0]);
-//	dup2(pipefd[1], 1); //redirection sortie -> pipe
+	printf("signal envoyer a %d\n", synch(0));
 
-	write(2, "write\n", 6);
-	write(pipefd[1], "hello\0", 6);
-
-//	system(buffer);//temporaire
+	dup2(pipefd[1], 1); //redirection sortie -> pipe
+	system(buffer);//temporaire
+	write(1, "\0", 1);
+//	kill(synch(0), SIGUSR1);
 }

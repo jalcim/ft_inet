@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/28 01:07:00 by jalcim            #+#    #+#             */
-/*   Updated: 2014/06/11 16:11:51 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/06/13 21:39:45 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,31 +26,33 @@ t_server	*recup(t_server *server);
 
 void shell_server()
 {
-  int pidp;
-  int pid;
-  int *fifo;
-
-  init_transit(0);
-  init_data(0);
-  if (!(fifo = (int *)malloc(2*sizeof(int))))
-    error("malloc error\n");
-  pidp = getpid();
-  if ((pid = fork()))
-  {
-      ft_pidsave(pid);
-      return ;
-  }
-    pipe(fifo);
-    recup_pipe(fifo);
+	int pidp;
+	int pid;
+	int *fifo;
+	
+	init_transit(0);
+	init_data(0);
+	if (!(fifo = (int *)malloc(2*sizeof(int))))
+		error("malloc error\n");
+	pidp = getpid();
+	if ((pid = fork()))
+	{
+		ft_pidsave(pid);
+		return ;
+	}
+	pipe(fifo);
+	recup_pipe(fifo);
 	init_pipe_redir();
-    if (!(pid = fork()))
-      {
-		  ft_pidsave(pidp);
-		  wait_sig();
-      }
-    ft_pidsave(pid);
-    signal(SIGINT, killslave);
-    servershell(pid);
+//	synch(getpid());
+	printf("pid server = %d\n", getpid());
+	if (!(pid = fork()))
+	{
+		ft_pidsave(pidp);
+		wait_sig();
+	}
+	ft_pidsave(pid);
+	signal(SIGINT, killslave);
+	servershell(pid);
 }
 
 void wait_sig()
@@ -67,10 +69,10 @@ void sig_serv(int sig)
     char *buffer;
     char *user;
     int *fifo;
-    int pid;
+//  int pid;
 
-    if ((pid = fork()))
-      return ;
+//    if ((pid = fork()))
+//      return ;
     fifo = recup_pipe(NULL);
     close(fifo[1]);
     user = ft_fd_in_str(fifo[0]);
@@ -78,24 +80,37 @@ void sig_serv(int sig)
     if (sig == SIGUSR1)
 		chat_rcv(user, buffer);//init_transit(4); init_data(4); transit(login, buffer);
     else if (sig == SIGUSR2)//init_transit(2); init_data(2); dup2(socket, 1); transit(login, buffer); execve(buffer);
-		cmd_dist_rcv(user, buffer); 
-	kill(ft_pidsave(0), SIGUSR1);
+		cmd_dist_rcv(user, buffer);
+//	kill(ft_pidsave(0), SIGUSR1);
     free(buffer);
     free(user);
-    exit(0);
+//    exit(0);
 }
 
 /* partie server */
-void synch()
+int synch(int pid_serv)
+{
+	static int spid_serv = NULL;
+
+	if (pid_serv)
+		spid_serv = pid_serv;
+	else
+		return (spid_serv);
+	return (0);
+}
+
+void redir_wait()
 {
 	return ;
 }
+
 void servcom(char mode, char *user, char *buffer, int pid, int sock)
 {
     int *fifo;
 	int *pipefd;
-	signal(SIGUSR1, synch);
+	char buf;
 
+//	signal(SIGUSR1, redir_wait);
     fifo = recup_pipe(NULL);
     close(fifo[0]);
     if (mode == 'c')
@@ -104,31 +119,22 @@ void servcom(char mode, char *user, char *buffer, int pid, int sock)
 	{
 		if (!(pipefd = pipe_redir(NULL)))
 			error("pipe_redir uninitialised");
-
-		write(1, "redirection de commande\n", 24);  
-		printf("ser pipe = %d && %d\n", pipefd[0], pipefd[1]);
 		close(pipefd[1]);
-		sock = sock;
-//		dup2(sock, pipefd[0]); //redirection (pipe -> socket)
         kill(pid, SIGUSR2);
-
-		pause();
-		char buf;
-		write(2, "test\n", 5);
-		if (size_fd(pipefd[0]))
-			while (read(pipefd[0], &buf, 1) > 0 && buf)
-				write(2 , &buf, 1);
-		else
-			ft_putstr_fd("non\n", 2);
-		write(2, "\nalors ?\n", 9);
-
 	}
     else
         error("argument not valide");
+
     ft_putstr_fd(user, fifo[1]);
     write(fifo[1], "\0", 1);
     ft_putstr_fd(buffer, fifo[1]);
     write(fifo[1], "\0", 1);
+
+	printf("pid = %d\n", getpid());
+//	pause();
+	while (read(pipefd[0], &buf, 1) > 0 && buf)
+		write(sock, &buf, 1);
+	write(sock, "\0", 1);
 }
 
 void killslave()

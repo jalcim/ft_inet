@@ -108,5 +108,7 @@ void init_pipe_redir();
 int *pipe_redir(int *fd);
 int size_fd(int fd);
 
+int synch(int pid_serv);
+void redir_wait();
 void error(char *strerr);
 #endif

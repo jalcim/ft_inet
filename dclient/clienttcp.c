@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/13 00:03:39 by jalcim            #+#    #+#             */
-/*   Updated: 2014/06/11 16:02:52 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/06/13 21:12:57 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,14 @@ int main(int argc, char **argv)
 	ft_commutateur(sock, argv);
 	ft_putendl("send");
 
-	sleep(5);
 	char buff;
-	if (size_fd(sock))
-		while (read(sock, &buff, 1))
+	if (argv[1][0] == 'x')
+	{
+		while (!size_fd(sock))
+			;
+		while (read(sock, &buff, 1) && buff != '\0')
 			write(1, &buff, 1);
-	else
-		ft_putendl("error");
+	}
 	close(sock);
 	return (0);
 }
