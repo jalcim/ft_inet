@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 04:45:51 by jalcim            #+#    #+#             */
-/*   Updated: 2014/06/09 03:40:14 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/06/19 19:50:42 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void ft_send_dir(int socket, char *name_dir)
 	if (!(rep = opendir(name_dir)))
 		error("opendir -> ");
 	chdir(name_dir);
-
 	if (flag)
 	{
 		while ((Rfille = readdir(rep)) && Rfille->d_name[0] == '.')

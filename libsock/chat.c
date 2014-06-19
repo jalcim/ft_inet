@@ -25,6 +25,7 @@ void chat_rcv(char *login, char *buffer)
 	init_transit(4);
 	init_data(4);
 	transit(login, buffer);
+	ft_putendl("vous avez un nouveau message");
 }
 
 void cmd_dist_rcv(char *login, char *buffer)
@@ -47,6 +48,6 @@ void cmd_dist_rcv(char *login, char *buffer)
 
 	dup2(pipefd[1], 1); //redirection sortie -> pipe
 	system(buffer);//temporaire
-	write(1, "\0", 1);
+	write(1, "\0", 1);//fils ; pere
 //	kill(synch(0), SIGUSR1);
 }
