@@ -6,7 +6,7 @@
 /*   By: jalcim <jalcim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/15 04:45:51 by jalcim            #+#    #+#             */
-/*   Updated: 2014/06/19 19:50:42 by jalcim           ###   ########.fr       */
+/*   Updated: 2014/06/19 20:22:55 by jalcim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "ft_inet.h"
 #include <stdio.h>
 
+void inter_sd_dir(t_dirent **Rfille, DIR **rep, int socket, int nb, char *nb_file);
 void ft_send_dir(int socket, char *name_dir)
 {
 	static int flag = 0;
@@ -30,13 +31,15 @@ void ft_send_dir(int socket, char *name_dir)
 	chdir(name_dir);
 	if (flag)
 	{
+		inter_sd_dir(&Rfille, &rep, socket, nb, nb_file);
+		/*
 		while ((Rfille = readdir(rep)) && Rfille->d_name[0] == '.')
 			if (Rfille == NULL)
 				error("readdir -> ");
 		write(socket, "1", 1);
 		write(socket, nb_file, ft_strlen(nb_file));
 		write(socket, "\0", 1);
-		ft_send_file(socket, Rfille->d_name, --nb, &rep);
+		ft_send_file(socket, Rfille->d_name, --nb, &rep);*/
 	}
 	else
 	{
@@ -47,6 +50,17 @@ void ft_send_dir(int socket, char *name_dir)
 	}
 	closedir(rep); 
 	chdir("..");
+}
+
+void inter_sd_dir(t_dirent **Rfille, DIR **rep, int socket, int nb, char *nb_file)
+{
+	while (((*Rfille) = readdir((*rep))) && (*Rfille)->d_name[0] == '.')
+		if ((*Rfille) == NULL)
+			error("readdir -> ");
+	write(socket, "1", 1);
+	write(socket, nb_file, ft_strlen(nb_file));
+	write(socket, "\0", 1);
+	ft_send_file(socket, (*Rfille)->d_name, --nb, rep);
 }
 
 void ft_send_file(int socket, char *filename, int nb, DIR **rep)
